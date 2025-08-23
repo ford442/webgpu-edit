@@ -1,0 +1,402 @@
+<head>
+<link rel='preconnect' href='https://wasm.noahcohn.com'>
+<link rel='preconnect' href='https://js.1ink.us'>
+<link rel='preconnect' href='https://glsl.1ink.us'>
+<link rel='preconnect' href='https://css.1ink.us'>
+<title>B3HD</title>
+
+<link charset=utf-8 crossorigin rel='stylesheet' href='https://css.1ink.us/sh1.1iss'/>
+<style>
+   h5 {
+            color: #3480D7;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        p {
+            color: #3480D7;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+        }
+
+        .darkRed {
+            color: darkred;
+        }
+
+        .darkBlue {
+            color: darkblue;
+        }
+
+        .navbar {
+            position: relative;
+            border: 1px solid #080808;
+            background-color: #222;
+            background-image: linear-gradient(to bottom, #3c3c3c 0, #222 100%);
+            background-repeat: repeat-x;
+            border-radius: 4px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-brand {
+            float: left;
+            padding: 14px 15px;
+            font-size: 18px;
+            line-height: 20px;
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        .navbar-links {
+            font-size: 14px;
+            line-height: 20px;
+            position: relative;
+            margin: 0;
+        }
+
+        .navbar-links li {
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .navbar-links li {
+            display: inline-block;
+            min-width: 120px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .navbar-links li.active {
+            background-image: #080808;
+            background: #080808;
+            color: #fff;
+            height: 100%;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin: 0;
+        }
+
+        a {
+            color: #9d9d9d;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            .navbar-brand {
+                width: 100%;
+            }
+
+            .navbar-links {
+                padding-left: 0;
+            }
+
+            button.demo {
+                margin-right: 100% !important;
+            }
+        }
+
+        #container {
+            padding-top: 0px;
+            padding-left: 50px;
+            width: 90%;
+            font-size: 14px;
+        }
+
+        .demo-zone {
+            display: block;
+            width: 100%;
+            min-height: 200px;
+        }
+
+        .btns-active,
+        .btns-inactive {
+            margin-top: 20px;
+        }
+
+        label {
+            display: inline-block;
+            min-width: 220px;
+            width: 220px;
+        }
+
+        button.demo {
+            margin-right: 0;
+            margin-left: 4px;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border-radius: 4px;
+            z-index: 1;
+            color: #333;
+            background: white;
+            background-image: linear-gradient(to bottom, #fff 0, #e0e0e0 100%);
+            border: 1px solid #ccc !important;
+            color: #333;
+            line-height: 20px;
+            font-size: 14px;
+            padding: 4px 12px;
+            margin-bottom: 2px;
+        }
+
+        button.demo:hover {
+            background-image: linear-gradient(to top, #fff 0, #e0e0e0 100%);
+        }
+
+        .presentation {
+            background: #eee;
+            color: #2e44b9;
+            border: 1px solid grey;
+            border-radius: 8px;
+            line-height: 20px;
+            padding: 8px;
+            margin-bottom: 40px;
+            width: 90%;
+            max-width: 800px;
+            font-size: 14px;
+        }
+        </style>
+
+</head>
+<body>
+
+<nav id=menu style='background:rgba(255,255,255,255);'>
+<section class=menu-section id=menu-sections>
+<br>
+<div style='text-align:center;'>
+TIMESLIDER<br>(Seconds between video changes)</div>
+<br><br>
+<ul class=menu-section-list>
+<div id=mnu>
+<div id=slideframe>
+<input type=text id=timeslider>
+</div></div></ul></section>
+<div class="selectboxs">
+Select Presets
+<select id=sh1 style='position:absolute;z-index:1;pointer-events:auto;'>
+<option value="Random">Random</option>
+<option value="Default">Default</option>
+<option value="party2020">Silver Ball</option>
+<option value="movewithouttracvveling">Move Without Travelling</option>
+<option value="crystalineballs">Crystal Palace</option>
+<option value="WOOL">Infinite Wool</option>
+<option value="hovercubes">Demoscene Cube</option>
+<option value="melter">Northern Melt</option>
+<option value="PSYscope">Psychedelic Fractal</option>
+<option value="EYEgod">The Eye of God</option>
+<option value="psychfracinteract">Kaliedascope</option>
+<option value="jewelball">Jeweled Ball</option>
+<option value="colorwavessplit">Stripes Dance</option>
+<option value="hypercylinederfrac">Demoscene Spheres</option>
+<option value="2orderblur">Flying Tabs</option>
+<option value="melt16">melt 16</option>
+<option value="melter16">melt 16</option>
+<option value="melter16le">melt 16</option>
+<option value=COLORDIVE>Colorful Dive into Geometry</option>
+<option value=PSYKALID2>Interactive Kaleidoscope 2 </option>
+<option value=FRACMOIR>fractal moire</option>
+<option value=INTERFRAC>interactive fractal 77.565</option>
+<option value=mirrorroom>Mirror Room</option>
+<option value=SEG>SEG</option>
+<option value=seg2>SEG 2</option>
+<option value=SEG3>SEG 3</option>
+<option value=rgbgoopysea>Blobs</option>
+<option value=neothree>Neo Three Worlds</option>
+<option value=diskicanady>Clouds</option>
+<option value=warpbubb>Warp Bubbles</option>
+<option value=drops>Drops</option>
+<option value=Where%20the%20River%20Goes>Where the River</option>
+<option value=clockglsl>Tokyo Clock</option>
+<option value=clipcppnsynthwave>CPPN</option>
+<option value=angryflowers>Fractal</option>
+<option value=northernwobblepearlybobble>Northern Wobbler</option>
+<option value=stream>Northern Stream</option>
+<option value=hypnofractal>Hypno Fractal</option>
+<option value=northernelves>Northern Elves</option>
+<option value=cppnshadertyoyy>CPPN 2</option>
+<option value=underthesurface>Melty Cube</option>
+<option value=psychedelics>Psy Melter</option>
+<option value=silverBALL>Silver Ball</option>
+<option value=fractallineofsymetry>Fractal Symmetry</option>
+<option value=hypnodisco>Hypno Disco</option>
+<option value=cloudglsl>Cloud GLSL</option>
+<option value=freestyle2020live>2020 Live</option>
+<option value=marcantoine>Escher</option>
+<option value=wattun>Water Tunnel</option>
+<option value=wattun2>Water Tunnel 2</option>
+<option value=colorcompanoin>Color Companions</option>
+<option value=colorcompanions2>Color Companions 2</option>
+<option value=flubber>Flubber</option>
+<option value=glassflower>Glass Flower</option>
+<option value=zelda>Zelda</option>
+<option value=dalek>Dalek</option>
+<option value=ashanoha>Ashanoha</option>
+<option value=abovetheclouds>Above The Clouds</option>
+<option value=forkwarpliq>Warpliq</option>
+<option value=causticswater>Cuastic Water</option>
+<option value=personapexweblatt>StainedGlassish</option>
+<option value=fluidshape>Fluid Shape</option>
+<option value=rainbowsandwich>Rainbow Sandwich</option>
+<option value=Prainbowlounge>[phreax] Rainbow Lounge</option>
+<option value=spcereactor>Space Reactor</option>
+<option value=ELECTRICgel>Electric Gel</option>
+<option value=darnwess>??? DarnWess</option>
+<option value=tribjourney>??? Journey</option>
+<option value=toothpastepenrose>??? Penrose</option>
+<option value=speed1994>Speed 1994</option>
+<option value=downdrain>Down Drain(small)</option>
+<option value=fractree>Fractal Tree</option>
+<option value=shadertoy001>001</option>
+<option value=happyjumpp>Happy Jumping Guy</option>
+
+</select>
+</div>
+<br />
+<br />
+<div>
+<select name="build" id="builds">
+    <option value="s3027">s3027</option>
+
+  <optgroup label="Production Builds:">
+    <option value=""></option>
+  </optgroup>
+  <optgroup label="Development Builds:">
+    <option value="s3027">s3027</option>
+  </optgroup>
+    <optgroup label="Testing Builds:">
+    <option value=""></option>
+  </optgroup>
+</select>
+<script>
+var mySelect = document.getElementById("builds");
+var firstValue = mySelect.options[0].value;
+mySelect.value = firstValue;
+</script>
+</div>
+<div class="selectboxv">
+<select id=vi1>
+<option value="Default">Default</option>
+<option value="https://b3hd.1ink.us/">B3hanced</option>
+<option value="https://test.1ink.us/bbb3/">Bevis and Butthead</option>
+<option value="https://test.1ink.us/1it3/">Lightning</option>
+<option value="https://test.1ink.us/l4zr/">Lazers</option>
+</select>
+</div>
+<br />
+<br />
+
+<div class="selectboxv">
+<select id=vi2>
+<option value="https://b3hd.1ink.us/video">B3hanced</option>
+<option value="https://test.1ink.us/bbb3/video">Bevis and Butthead</option>
+<option value="https://test.1ink.us/1it3/video">Lightning</option>
+<option value="https://test.1ink.us/l4zr/video">Lazers</option>
+</select>
+</div>
+<br />
+<br />
+
+<div class="selectboxv">
+<select id=vi3>
+<option value="https://b3hd.1ink.us/video">B3hanced</option>
+<option value="https://test.1ink.us/bbb3/video">Bevis and Butthead</option>
+<option value="https://test.1ink.us/1it3/video">Lightning</option>
+<option value="https://test.1ink.us/l4zr/video">Lazers</option>
+</select>
+</div>
+
+</nav>
+<main id=panel>
+<iframe src=./bezz.1ink id=circle title='Circular mask'></iframe>
+<input type=button id=startBtn style='background-color:gold;position:absolute;display:block;left:6%;top:9%;z-index:3200;border:4px solid #e7e7e7;border-radius:17%;'></input>
+<input type=button id=startBtn3 style='background-color:yellow;position:absolute;display:block;left:3%;top:9%;z-index:3200;border:4px solid #e7e7e7;border-radius:17%;'></input>
+<div style='background-color:white;position:absolute;display:block;left:8%;top:9%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;'>START</div>
+
+<input type=button id=startBtn2 style='background-color:blue;position:absolute;display:block;left:12%;top:9%;z-index:3200;border:4px solid #e7e7e7;border-radius:17%;' />
+<div style='background-color:white;position:absolute;display:block;left:14%;top:9%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;'>CHANGE PROGRAM</div>
+
+<input type=button id=menuBtn style='background-color:black;position:absolute;display:block;left:3%;top:5%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+<div style='background-color:white;position:absolute;display:block;left:5%;top:5%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;'>MENU</div>
+
+<input type=button id=uniUp style='background-color:black;position:absolute;display:none;left:3%;top:50%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=uniDown style='background-color:black;position:absolute;display:none;left:7%;top:50%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=viewUp style='background-color:black;position:absolute;display:none;left:5%;top:46%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=viewDown style='background-color:black;position:absolute;display:none;left:5%;top:54%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=sizeUp style='background-color:black;position:absolute;display:none;left:5%;top:86%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=sizeDown style='background-color:black;position:absolute;display:none;left:5%;top:90%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=moveDown style='background-color:black;position:absolute;display:none;right:5%;top:90%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=moveUp style='background-color:black;position:absolute;display:none;right:5%;top:86%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=moveLeft style='background-color:black;position:absolute;display:none;right:3%;top:90%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<input type=button id=moveRight style='background-color:black;position:absolute;display:none;right:7%;top:90%;z-index:3200;border:6px solid #e7e7e7;border-radius:20%;' />
+
+<div class=emscripten id=stat></div>
+<div class=emscripten>
+<progress value=0 max=100 id=progress></progress>
+</div>
+<input type=checkbox id=di hidden />
+<div hidden=true id=path>./all/melt</div>
+<div id=ffire hidden>0</div>
+<div id=iwid hidden>0</div>
+<div id=ihig hidden>0</div>
+<div id=pmhig hidden>0</div>
+<div id=canvasSize hidden>0</div>
+<div id=floatHigh hidden>1</div>
+<div id=wid hidden>0</div>
+<div id=hig hidden>0</div>
+<div id=lwid hidden>0</div>
+<div id=lhig hidden>0</div>
+<div id=ihid hidden>0</div>
+<div id=tim hidden>2500</div>
+<div id=shut hidden>1</div>
+<div id=isrc hidden>./intro.mp4</div>
+<div id=idur hidden>0</div>
+<div id=itim hidden>0</div>
+<div id=smd hidden>110.10</div>
+<div id=wrap>
+<div id=contain1>
+</div>
+<div id=contain2>
+ 
+</div>
+</main>
+</div>
+
+<script>
+document.getElementById("startBtn3").addEventListener('click',function(){
+
+var mySelect = document.getElementById("builds");
+var urlSource=mySelect.value;
+let scr=document.createElement("script");
+scr.async=true;
+scr.charset='utf-8';
+scr.type='text/javascript';
+scr.defer=true;
+scr.src="https://wasm.noahcohn.com/b3hd/"+urlSource+".1ijs";
+// scr.src="https://c0d3.1ink.us/s3027.1ijs";
+document.body.appendChild(scr);
+setTimeout(function(){
+document.getElementById('startBtn').click();
+},500);
+});
+</script>
+
+</body>
