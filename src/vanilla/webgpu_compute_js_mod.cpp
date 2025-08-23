@@ -1434,7 +1434,7 @@ gl3.drawImage(vvi,0,0,w$-offsetX,h$-offsetY,0,0,w$-offsetX,h$-offsetY);
 var image=gl3.getImageData(0,0,w$-offsetX,h$-offsetY);
 var imageData=image.data;
 let pixelData=new Uint8ClampedArray(imageData);
-var fileStream=FS.open('/video/frame.gl','w');
+var fileStream=FS.open('/video/frame.gl','w+');
 FS.write(fileStream,pixelData,0,pixelData.length,0);
 Module.cnvOn();
 setInterval(function(){
@@ -1995,6 +1995,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
