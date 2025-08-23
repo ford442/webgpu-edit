@@ -520,6 +520,7 @@ wgpu_compute_pass_encoder_dispatch_workgroups(WGPU_ComputePassCommandEncoder.at(
 wgpu_encoder_end(WGPU_ComputePassCommandEncoder.at(0,0,0));
        
   // wgpu_command_encoder_copy_texture_to_texture(WGPU_CommandEncoder.at(0,0,0),&wict.at(1,1),&wict.at(3,3),sze.at(3,3),sze.at(3,3),1);
+  wgpu_command_encoder_copy_texture_to_texture(WGPU_CommandEncoder.at(0,0,0),&wict.at(3,3),&wict.at(4,4),sze.at(3,3),sze.at(3,3),1);
        
 /*  //  Buffer Data View
 if(WGPU_BufferStatus.at(0,0,0)!=3&&on.at(1,1)==0){
@@ -1539,4 +1540,5 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
