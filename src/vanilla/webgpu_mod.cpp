@@ -44,9 +44,9 @@ void resizeInputTexture(emscripten_align1_int newSize) {
         wgpu_object_destroy(WGPU_Texture.at(0,0,3));
     }
     szeV.at(7,7) = newSize; // Update the global size variable
-    // sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
-    textureDescriptorInV.width = newSize;
-    textureDescriptorInV.height = newSize;
+    sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
+    textureDescriptorInV.width = sze.at(3,3);
+    textureDescriptorInV.height = sze.at(3,3);
     WGPU_TextureDescriptor.at(0,0,3) = textureDescriptorInV; // Store it back in the global array
     textureInV = wgpu_device_create_texture(wd.at(0,0), &WGPU_TextureDescriptor.at(0,0,3));
     WGPU_Texture.at(0,0,3) = textureInV;
@@ -520,7 +520,7 @@ wgpu_encoder_set_bind_group(WGPU_ComputePassCommandEncoder.at(0,0,0),0,WGPU_Bind
 wgpu_compute_pass_encoder_dispatch_workgroups(WGPU_ComputePassCommandEncoder.at(0,0,0),compute_xyz.at(0,0),compute_xyz.at(0,1),compute_xyz.at(0,2));
 wgpu_encoder_end(WGPU_ComputePassCommandEncoder.at(0,0,0));
        
-wgpu_command_encoder_copy_texture_to_texture(WGPU_CommandEncoder.at(0,0,0),&wict.at(1,1),&wict.at(3,3),sze.at(3,3),sze.at(3,3),1);
+wgpu_command_encoder_copy_texture_to_texture(WGPU_CommandEncoder.at(0,0,0),&wict.at(1,1),&wict.at(3,3),sze.at(1,1),sze.at(1,1),1);
        
 /*  //  Buffer Data View
 if(WGPU_BufferStatus.at(0,0,0)!=3&&on.at(1,1)==0){
@@ -1540,6 +1540,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
