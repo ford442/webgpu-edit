@@ -43,7 +43,7 @@ void resizeInputTexture(emscripten_align1_int newSize) {
     if (WGPU_Texture.at(0,0,3)) { // WGPU_Texture.at(0,0,3) holds textureInV
         wgpu_object_destroy(WGPU_Texture.at(0,0,3));
     }
-    // szeV.at(7,7) = newSize; // Update the global size variable
+    szeV.at(7,7) = newSize; // Update the global size variable
     // sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
     textureDescriptorInV.width = newSize;
     textureDescriptorInV.height = newSize;
@@ -1540,6 +1540,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
