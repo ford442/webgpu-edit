@@ -1682,13 +1682,10 @@ var txxt=preList[i].href;
 let pathName = window.location.pathname;
 let lastSlashIndex = pathName.lastIndexOf('/');
 let basePath = pathName.substring(0, lastSlashIndex + 1);
-  console.log('image url:');
-  console.log(txxt);
+
 txxt=txxt.replace('https://noahcohn.com/','');
-  console.log('image url after replace:');
-  console.log(txxt);
-  console.log('link:');
-  console.log('./pics/'+txxt);
+txxt=txxt.replace('https://www.noahcohn.com/','');
+
 $vids[i]='./pics/'+txxt;
 // $vids[i]=basePath+'./pics/'+txxt;
 // $vids[i]='https://noahcohn.com/pics/'+txxt;
@@ -1998,6 +1995,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
