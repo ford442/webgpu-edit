@@ -40,34 +40,19 @@ void resizeInputTexture(emscripten_align1_int newSize) {
     if (wtv.at(6,6)) { // wtv.at(6,6) holds INVTextureView
         wgpu_object_destroy(wtv.at(6,6));
     }
-    if (wtv.at(4,4)) { // wtv.at(6,6) holds INVTextureView
-        wgpu_object_destroy(wtv.at(4,4));
-    }
     if (WGPU_Texture.at(0,0,3)) { // WGPU_Texture.at(0,0,3) holds textureInV
         wgpu_object_destroy(WGPU_Texture.at(0,0,3));
     }
-    if (WGPU_Texture.at(0,0,1)) { // WGPU_Texture.at(0,0,3) holds textureInV
-        wgpu_object_destroy(WGPU_Texture.at(0,0,1));
-    }
     szeV.at(7,7) = newSize; // Update the global size variable
-    sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
+    // sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
     textureDescriptorInV.width = newSize;
     textureDescriptorInV.height = newSize;
-       textureDescriptorOut.width = newSize;
-       textureDescriptorOut.height = newSize;
     WGPU_TextureDescriptor.at(0,0,3) = textureDescriptorInV; // Store it back in the global array
-    WGPU_TextureDescriptor.at(0,0,1) = textureDescriptorOut; // Store it back in the global array
     textureInV = wgpu_device_create_texture(wd.at(0,0), &WGPU_TextureDescriptor.at(0,0,3));
-    textureOut = wgpu_device_create_texture(wd.at(0,0), &WGPU_TextureDescriptor.at(0,0,1));
-    WGPU_Texture.at(0,0,1) = textureOut;
     WGPU_Texture.at(0,0,3) = textureInV;
     INVTextureView = wgpu_texture_create_view(WGPU_Texture.at(0,0,3), &WGPU_TextureViewDescriptor.at(0,0,3));
-    OUTTextureView = wgpu_texture_create_view(WGPU_Texture.at(0,0,1), &WGPU_TextureViewDescriptor.at(0,0,1));
-    wtv.at(4,4) = OUTTextureView;
     wtv.at(6,6) = INVTextureView;
-    Compute_Bindgroup_Entries[3].resource = wtv.at(4,4); // wtv.at(6,6) is INVTextureView
     Compute_Bindgroup_Entries[8].resource = wtv.at(6,6); // wtv.at(6,6) is INVTextureView
-    wict.at(1,1).texture = WGPU_Texture.at(0,0,1);
     wict.at(4,4).texture = WGPU_Texture.at(0,0,3);
     WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGroupLayout.at(0,0,0), WGPU_BindGroupEntries.at(0,0,0), 10);
     emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
@@ -1554,6 +1539,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
