@@ -1201,9 +1201,15 @@ Module.frmOn();
 },16.666);
 }                 //  have gemini help crop to square
 
+
+
 // It's good practice to store the interval ID in a higher scope
 // so it can be cleared properly if videoStart is called again.
 let animationIntervalId = null;
+
+
+      //  video called by startBtn  //
+      ////////////////////////////////
 
 function videoStart() {
     // 1. Interval Management: Clear any existing animation interval
@@ -1376,6 +1382,9 @@ function videoStart() {
     }
 }
 
+
+  //  image called by startBtn //
+  ///////////////////////////////
 
 function imageStart(){
 var vvi=document.querySelector('#ivi');
@@ -1623,6 +1632,10 @@ regularStart();
 const vsiz=document.querySelector('#vsiz');
 let menuSz=parseInt(window.innerWidth*.5,10);
 
+
+   //  video / image  // 
+   /////////////////////
+
 document.querySelector('#startBtn').addEventListener('click',function(){
 let vsiz=document.querySelector('#vsiz').innerHTML;
 var $h,$pt,slt,$ll,r$,$w,$r,$lt,$hg,$ls,lo,mv,he,wi;
@@ -1671,7 +1684,7 @@ let lastSlashIndex = pathName.lastIndexOf('/');
 let basePath = pathName.substring(0, lastSlashIndex + 1);
 txxt=txxt.replace('https://noahcohn.com/','');
 $vids[i]=basePath+'pics/'+txxt;
-$vids[i]='https://noahcohn.com/pics/'+txxt;
+// $vids[i]='https://noahcohn.com/pics/'+txxt;
 }}
 
 function scanImages(){
@@ -1978,3 +1991,4 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
