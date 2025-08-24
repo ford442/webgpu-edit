@@ -1868,15 +1868,15 @@ if(media_mode=='img'){
 // document.querySelector('#lvi').width=wi;
 }
 if(he>1){
-Module.resizeInputTexture(he);
-Module.sizeBuffer(he);
+// Module.resizeInputTexture(he);
+// Module.sizeBuffer(he);
 }
 document.querySelector('#di').click();
 // videoStart();
 // let srsiz=document.querySelector('#srsiz').innerHTML;
 // let vsiz=document.querySelector('#vsiz').innerHTML;
 // Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[document.querySelector('#ivi').height,vsiz,srsiz]);
-
+canvasStartSize();
 // imageStart();
 }
 setTimeout(function(){
@@ -2006,6 +2006,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
