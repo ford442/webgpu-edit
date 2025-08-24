@@ -280,6 +280,7 @@ static wfs_tensor wfs=wfs_tensor{2,2};
 static wib_tensor wib=wib_tensor{3,3};
 static d_tensor d64_uniform=d_tensor{8,8};
 static f_tensor f32_uniform=f_tensor{8,8};
+static ui32_tensor u32_uniform=ui32_tensor{2,2};
 static wvbl_tensor wvbl=wvbl_tensor{2,2};
 static wcolor_tensor clearC=wcolor_tensor{2,2};
 static xyz_tensor oxyz=xyz_tensor{2,2};
@@ -428,3 +429,4 @@ WGpuImageCopyTextureTagged External_Image_Texture={};
 WGpuImageCopyBuffer Input_Image_Buffer={};
 WGpuImageCopyBuffer Output_Image_Buffer={};
 WGpuImageCopyBuffer Mapped_Image_Buffer={};
+
