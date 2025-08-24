@@ -237,6 +237,7 @@ void convert_u8_to_float_sse(const boost::container::vector<uint8_t>& data, boos
     const uint8_t* data_ptr = data.data();
     float* buffer_ptr = pixel_buffer.data();
     const size_t limit = (num_elements / 4) * 4;
+    #pragma omp simd
     for (size_t i = 0; i < limit; i += 4) {
         // The upper 96 bits will be zero.
         __m128i data_u8_sse = _mm_loadu_si32(data_ptr + i);
@@ -250,7 +251,7 @@ void convert_u8_to_float_sse(const boost::container::vector<uint8_t>& data, boos
         // Store the 4 resulting floats in the output buffer.
         _mm_storeu_ps(buffer_ptr + i, data_f32_sse);
     }
-    // Process any remaining elements (less than 4) with a standard scalar loop.
+    #pragma omp simd
     for (size_t i = limit; i < num_elements; ++i) {
         buffer_ptr[i] = static_cast<float>(data_ptr[i]) * scale;
     }
@@ -1540,6 +1541,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
