@@ -495,6 +495,7 @@ let fileStream=FS.open('/video/frame.gl','w');
   }
 }
 
+
 function canvasStartSize(){
 /*
 const media_mode = document.querySelector('#media').value;
@@ -532,8 +533,8 @@ h$=vvic.videoHeight;
 vvic.width=vvic.videoWidth;
 vvic.height=vvic.videoHeight;
 }
-const keepSizea = Math.max(h$, w$);
-const keepSize = parseInt(Math.min(keepSizea, vsiz));
+const keepSize = Math.max(h$, w$);
+// const keepSize = parseInt(Math.min(keepSizea, vsiz));
 const drawX = parseInt((keepSize - w$) / 2);
 const drawY = parseInt((keepSize - h$) / 2);
 console.log("canvas size: ",keepSize,", ",keepSize);
@@ -2009,6 +2010,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
