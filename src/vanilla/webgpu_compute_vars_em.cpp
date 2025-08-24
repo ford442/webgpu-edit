@@ -263,6 +263,7 @@ WGpuMultisampleState multiSamp2={};
 WGpuBufferBindingLayout bufferBindingLayout1={};
 WGpuBufferBindingLayout bufferBindingLayoutR={};
 WGpuBufferBindingLayout bufferBindingLayoutUVEC={};
+WGpuBufferBindingLayout bufferBindingLayoutU={};
 WGpuTextureBindingLayout textureBindingLayoutUint32={};
 WGpuTextureBindingLayout textureBindingLayoutFloat={};
 WGpuTextureBindingLayout textureBindingLayoutFloatM={};
@@ -429,4 +430,5 @@ WGpuImageCopyTextureTagged External_Image_Texture={};
 WGpuImageCopyBuffer Input_Image_Buffer={};
 WGpuImageCopyBuffer Output_Image_Buffer={};
 WGpuImageCopyBuffer Mapped_Image_Buffer={};
+
 
