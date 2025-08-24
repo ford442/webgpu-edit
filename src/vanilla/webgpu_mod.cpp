@@ -231,7 +231,7 @@ void convert_u8_to_float_sse(const boost::container::vector<uint8_t>& data, boos
         pixel_buffer.clear();
         return;
     }
-    pixel_buffer.resize(num_elements);
+   // pixel_buffer.resize(num_elements);
     const float scale = 1.0f / 255.0f;
     const __m128 inv_255_ps_sse = _mm_set1_ps(scale); // 128-bit scaling vector
     const uint8_t* data_ptr = data.data();
@@ -1540,6 +1540,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
