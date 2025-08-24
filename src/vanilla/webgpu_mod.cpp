@@ -20,7 +20,7 @@ compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,2)=2;
 size_t num_elements = (size_t)sz * sz * 4;
-// pixel_buffer.resize(num_elements);
+pixel_buffer.resize(num_elements);
 return EM_TRUE;
 }
 
@@ -1572,6 +1572,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
