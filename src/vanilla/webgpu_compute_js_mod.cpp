@@ -496,7 +496,13 @@ let fileStream=FS.open('/video/frame.gl','w');
 }
 
 function canvasStartSize(){
+const media_mode = document.querySelector('#media').value;
+if(media_mode=='img'){
+const vvic=document.querySelector('#ivi');
+}
+if(media_mode=='vid'){
 const vvic=document.querySelector('#mvi');
+}
 const srsiz=document.querySelector('#srsiz').innerHTML;
 const vsiz=document.querySelector('#vsiz').innerHTML;
 const SiZ=window.innerHeight;
@@ -1996,6 +2002,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
