@@ -1902,8 +1902,11 @@ videoStart()},4200);
 }
 if(media_mode=='img'){
 scanImages();
+/*
 setTimeout(function(){
-imageStart()},3200);
+imageStart();
+},3200);
+*/
 setTimeout(function(){
 loada()},4200);
 }
@@ -2006,6 +2009,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
