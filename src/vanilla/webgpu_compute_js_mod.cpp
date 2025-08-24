@@ -1858,8 +1858,9 @@ if(media_mode=='img'){
 // document.querySelector('#lvi').width=wi;
 }
 if(he>1){
+let vsiz=document.querySelector('#vsiz').innerHTML;
 Module.resizeInputTexture(he);
-Module.sizeBuffer(he);
+Module.sizeBuffer(vsiz);
 }
 document.querySelector('#di').click();
 // videoStart();
@@ -1996,6 +1997,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
