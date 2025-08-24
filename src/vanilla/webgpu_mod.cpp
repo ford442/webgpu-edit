@@ -33,6 +33,8 @@ return EM_TRUE;
  * @param newSize The new width and height for the texture. The texture is assumed to be square.
  */
 void resizeInputTexture(emscripten_align1_int newSize) {
+              u32_uniform.at(0,0)=static_cast<uint32_t>(newSize);
+/*
     emscripten_log(EM_LOG_CONSOLE, "Resizing input texture to %dx%d", newSize, newSize);
     if (WGPU_BindGroup.at(0,0,0)) {
         wgpu_object_destroy(WGPU_BindGroup.at(0,0,0));
@@ -57,6 +59,7 @@ void resizeInputTexture(emscripten_align1_int newSize) {
     wict.at(4,4)=Input_Image_TextureV;
     WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGroupLayout.at(0,0,0), WGPU_BindGroupEntries.at(0,0,0), 10);
     emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
+    */
 }
 
 emscripten::val getPixelBufferView() {
@@ -237,6 +240,7 @@ void convert_u8_to_float_sse(const boost::container::vector<uint8_t>& data, boos
     const uint8_t* data_ptr = data.data();
     float* buffer_ptr = pixel_buffer.data();
     const size_t limit = (num_elements / 4) * 4;
+    #pragma omp simd
     for (size_t i = 0; i < limit; i += 4) {
         // The upper 96 bits will be zero.
         __m128i data_u8_sse = _mm_loadu_si32(data_ptr + i);
@@ -251,6 +255,7 @@ void convert_u8_to_float_sse(const boost::container::vector<uint8_t>& data, boos
         _mm_storeu_ps(buffer_ptr + i, data_f32_sse);
     }
     // Process any remaining elements (less than 4) with a standard scalar loop.
+    #pragma omp simd
     for (size_t i = limit; i < num_elements; ++i) {
         buffer_ptr[i] = static_cast<float>(data_ptr[i]) * scale;
     }
@@ -487,8 +492,7 @@ wgpu_queue_write_buffer(wq.at(0,0),wb.at(1,1),0,&u64_uni.at(3,3),sizeof(uint64_t
 wgpu_queue_write_buffer(wq.at(0,0),wb.at(0,0),0,&f32_uniform.at(0,0),sizeof(emscripten_align1_float));
 wgpu_queue_write_buffer(wq.at(0,0),wb.at(8,8),0,u64v.at(0,0).data(),sizeof(uint32_t)*3);
 
-       
-       wgpu_queue_write_buffer(wq.at(0,0),wb.at(9,9),0,  f32_uniform.at(0,0).data()  ,sizeof(uint32_t));
+       wgpu_queue_write_buffer(wq.at(0,0),wb.at(9,9),0,  u32_uniform.at(0,0).data()  ,sizeof(uint32_t));
 
        //  wgpu_queue_write_buffer(wq.at(0,0),wb.at(0,0),0,&v4f32_uniform.at(0,0),sizeof(emscripten_align1_float)*4);
 wgpu_render_pass_encoder_set_index_buffer(wrpe.at(0,0),wb.at(7,7),WGPU_INDEX_FORMAT_UINT32,0,36*sizeof(uint32_t));
@@ -1436,7 +1440,7 @@ szeV.at(7,7)=vsz;
    compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
     compute_xyz.at(0,2)=2;
 u64_uni.at(4,4)=sr;  //  texture resize amount
-       u32_uniform.at(0,0)=static_cast<uint32>(sze.at(1,1));
+       u32_uniform.at(0,0)=static_cast<uint32_t>(vsz);
 emscripten_log(EM_LOG_CONSOLE,"C main size: %d", sze.at(1,1));
 emscripten_log(EM_LOG_CONSOLE,"C input texture size: %d", szeV.at(7,7));
 emscripten_log(EM_LOG_CONSOLE,"C super res size: %d", u64_uni.at(4,4));
@@ -1463,7 +1467,7 @@ emscripten_log(EM_LOG_CONSOLE,"C input texture sizes: %d", szeV.at(7,7));
 emscripten_log(EM_LOG_CONSOLE,"C main size: %d", sze.at(1,1));
 emscripten_log(EM_LOG_CONSOLE,"C super res size: %d",u64_uni.at(4,4));
 f32_uniform.at(2,2)=static_cast<emscripten_align1_float>(sze.at(1,1));
-  u32_uniform.at(0,0)=static_cast<uint32>(sze.at(1,1));
+       u32_uniform.at(0,0)=static_cast<uint32_t>(vsz);
 szef.at(1,1)=static_cast<emscripten_align1_float>(szeV.at(7,7));
 options.powerPreference=WGPU_POWER_PREFERENCE_HIGH_PERFORMANCE;
 options.forceFallbackAdapter=EM_FALSE;
@@ -1566,6 +1570,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
