@@ -6,6 +6,7 @@
 @group(0)@binding(7)var resizeIN:texture_2d<f32>;
 @group(0)@binding(8)var videoIN:texture_2d<f32>; // Unused in original, kept for consistency
 @group(0)@binding(9)var <uniform>iZoom:vec3<i32>;
+@group(0)@binding(10)var <uniform>inSize:u32;
 
 
 // --- Constants ---
