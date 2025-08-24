@@ -492,7 +492,7 @@ wgpu_queue_write_buffer(wq.at(0,0),wb.at(1,1),0,&u64_uni.at(3,3),sizeof(uint64_t
 wgpu_queue_write_buffer(wq.at(0,0),wb.at(0,0),0,&f32_uniform.at(0,0),sizeof(emscripten_align1_float));
 wgpu_queue_write_buffer(wq.at(0,0),wb.at(8,8),0,u64v.at(0,0).data(),sizeof(uint32_t)*3);
 
-       wgpu_queue_write_buffer(wq.at(0,0),wb.at(9,9),0,  u32_uniform.at(0,0)  ,sizeof(uint32_t));
+       wgpu_queue_write_buffer(wq.at(0,0),wb.at(9,9),0,  &u32_uniform.at(0,0)  ,sizeof(uint32_t));
 
        //  wgpu_queue_write_buffer(wq.at(0,0),wb.at(0,0),0,&v4f32_uniform.at(0,0),sizeof(emscripten_align1_float)*4);
 wgpu_render_pass_encoder_set_index_buffer(wrpe.at(0,0),wb.at(7,7),WGPU_INDEX_FORMAT_UINT32,0,36*sizeof(uint32_t));
@@ -1570,6 +1570,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
