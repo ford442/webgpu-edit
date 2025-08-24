@@ -34,6 +34,8 @@ return EM_TRUE;
  */
 void resizeInputTexture(emscripten_align1_int newSize) {
               u32_uniform.at(0,0)=static_cast<uint32_t>(newSize);
+    szeV.at(7,7) = newSize; // Update the global size variable
+
 /*
     emscripten_log(EM_LOG_CONSOLE, "Resizing input texture to %dx%d", newSize, newSize);
     if (WGPU_BindGroup.at(0,0,0)) {
@@ -1570,6 +1572,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
