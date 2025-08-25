@@ -1880,7 +1880,7 @@ document.querySelector('#di').click();
 // let srsiz=document.querySelector('#srsiz').innerHTML;
 // let vsiz=document.querySelector('#vsiz').innerHTML;
 // Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[document.querySelector('#ivi').height,vsiz,srsiz]);
-canvasStartSize();
+// canvasStartSize();
 // imageStart();
 }
 setTimeout(function(){
@@ -2018,5 +2018,6 @@ Module.ftch();
 });
 
 });
+
 
 
