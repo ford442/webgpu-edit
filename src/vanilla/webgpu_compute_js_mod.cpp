@@ -2009,20 +2009,10 @@ Module.ccall("panLeft");
 setTimeout(function(){
 document.querySelector('#di').click();
 },250);
+
+document.querySelector('#testfetch').addEventListener('click',function(){
+Module.ftch();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
