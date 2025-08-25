@@ -1,6 +1,7 @@
 #include <boost/cstdfloat.hpp>  // must be first include
 // #include <stdfloat.hpp>  // wait for clang 16
 #include <emscripten/bind.h>
+#include <emscripten/fetch.h>
 
 // #include "/usr/include/eigen3/Eigen/Eigen"
 #include <omp.h>
@@ -343,3 +344,4 @@ using clk_tensor=boost::numeric::ublas::tensor<boost::chrono::high_resolution_cl
 using timespn_tensor=boost::numeric::ublas::tensor<boost::chrono::duration<boost::compute::double_,boost::chrono::seconds::period>>;
 
 EM_BOOL ms_l,clk_l;
+
