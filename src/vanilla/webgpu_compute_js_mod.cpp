@@ -1830,6 +1830,9 @@ $ls=Math.round($ls);
 $ls=$ls/1000;
 var rnum=Math.floor((Math.random()*($vids[0]-5))+5);
 document.querySelector('#isrc').innerHTML=$vids[rnum];
+
+Module.ftch($vids[rnum]);
+
 $h=window.innerHeight;
 he=document.querySelector('#hig').innerHTML;
 wi=document.querySelector('#wid').innerHTML;
@@ -2015,4 +2018,5 @@ Module.ftch();
 });
 
 });
+
 
