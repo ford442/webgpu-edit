@@ -15,7 +15,7 @@ namespace fsm = boost::filesystem;
 
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
-void process_image(unsigned char* img_data, int size) {
+void process_image(const char* img_data, int size) {
     int width, height, channels;
     unsigned char* pixels = stbi_load_from_memory(img_data, size, &width, &height, &channels, 0);
     if (pixels) {
@@ -1588,6 +1588,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
