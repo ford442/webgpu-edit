@@ -15,6 +15,49 @@ namespace fsm = boost::filesystem;
 
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
+
+
+  // fetch
+// This function will be called when the download succeeds
+void downloadSucceeded(emscripten_fetch_t *fetch) {
+    std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
+
+    // Open a file to save the data
+    std::ofstream outfile("output.bin", std::ios::binary);
+    if (outfile) {
+        // Write the downloaded data to the file
+        outfile.write(fetch->data, fetch->numBytes);
+        outfile.close();
+        std::cout << "File saved as output.bin." << std::endl;
+    } else {
+        std::cerr << "Failed to open output.bin for writing." << std::endl;
+    }
+
+    // Clean up the fetch object
+    emscripten_fetch_close(fetch);
+}
+
+// This function will be called if the download fails
+void downloadFailed(emscripten_fetch_t *fetch) {
+    std::cerr << "Downloading " << fetch->url << " failed! HTTP status code: " << fetch->status << std::endl;
+    // Clean up the fetch object
+    emscripten_fetch_close(fetch);
+}
+
+void fetcher() {
+    emscripten_fetch_attr_t attr;
+    emscripten_fetch_attr_init(&attr);
+    strcpy(attr.requestMethod, "GET");
+    attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+    attr.onsuccess = downloadSucceeded;
+    attr.onerror = downloadFailed;
+    std::cout << "Requesting file from server..." << std::endl;
+    emscripten_fetch(&attr, "https://www.boost.org/LICENSE_1_0.txt");
+    return;
+}
+
+
+
 EM_BOOL buffer_resize(emscripten_align1_int sz){
        compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
    compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
@@ -166,6 +209,7 @@ return EM_TRUE;
 }
 
 EMSCRIPTEN_BINDINGS(my_video_module) {
+emscripten::function("ftch", &fetcher);
 emscripten::function("frmOn", &texOn);
 emscripten::function("cnvOn", &cnvOn);
 emscripten::function("getPixelBufferView", &getPixelBufferView);
@@ -1541,18 +1585,5 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
