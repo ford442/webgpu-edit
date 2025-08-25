@@ -15,18 +15,30 @@ namespace fsm = boost::filesystem;
 
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
-
+void process_image(unsigned char* img_data, int size) {
+    int width, height, channels;
+    unsigned char* pixels = stbi_load_from_memory(img_data, size, &width, &height, &channels, 0);
+    if (pixels) {
+        std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
+        int decoded_size = width * height * channels;
+        std::ofstream outfile("/video/frame.gl", std::ios::binary);
+        if (outfile) {
+            outfile.write((char*)pixels, decoded_size);
+            outfile.close();
+            std::cout << "File 'decoded_image.raw' saved to the virtual filesystem." << std::endl;
+            on_b.at(5,5)=1;
+        } else {
+            std::cerr << "Failed to open 'decoded_image.raw' for writing in the VFS." << std::endl;
+        }
+        stbi_image_free(pixels);
+    } else {
+        std::cerr << "Failed to decode image from memory." << std::endl;
+    }
+}
 
 void downloadSucceeded(emscripten_fetch_t * fetch) {
     std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
-    std::ofstream outfile("output.bin", std::ios::binary);
-    if (outfile) {
-        outfile.write(fetch->data, fetch->numBytes);
-        outfile.close();
-        std::cout << "File saved as output.bin." << std::endl;
-    } else {
-        std::cerr << "Failed to open output.bin for writing." << std::endl;
-    }
+    process_image(fetch->data,fetch->numBytes);
     emscripten_fetch_close(fetch);
 }
 
@@ -1576,6 +1588,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
