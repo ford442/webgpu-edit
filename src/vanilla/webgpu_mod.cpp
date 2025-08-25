@@ -35,7 +35,7 @@ void downloadFailed(emscripten_fetch_t * fetch) {
     emscripten_fetch_close(fetch);
 }
 
-void fetcher(const char * fl_nm) {
+void fetcher(char * fl_nm) {
     emscripten_fetch_attr_t attr;
     emscripten_fetch_attr_init(&attr);
     strcpy(attr.requestMethod, "GET");
@@ -1576,6 +1576,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
