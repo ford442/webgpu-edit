@@ -15,12 +15,24 @@ namespace fsm = boost::filesystem;
 
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
+EM_BOOL buffer_resize(emscripten_align1_int sz){
+compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,2)=2;
+size_t num_elements = (size_t)sz * sz * 3;
+pixel_buffer.resize(num_elements);
+return EM_TRUE;
+}
+
 void process_image(const char * img_data, int size) {
     int width, height, channels;
     unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
     if (pixels) {
         std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         int decoded_size = width * height * channels;
+        buffer_resize(height);
+        pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+        /*
         std::ofstream outfile("/video/frame.gl", std::ios::binary);
         if (outfile) {
             outfile.write((char*)pixels, decoded_size);
@@ -30,6 +42,9 @@ void process_image(const char * img_data, int size) {
         } else {
             std::cerr << "Failed to open 'decoded_image.raw' for writing in the VFS." << std::endl;
         }
+        */
+        szeV.at(7,7) = height;
+        on_b.at(4,4)=1;
         stbi_image_free(pixels);
     } else {
         std::cerr << "Failed to decode image from memory." << std::endl;
@@ -60,15 +75,6 @@ void fetcher(const std::string & fl_nm) {
 }
 
 
-
-EM_BOOL buffer_resize(emscripten_align1_int sz){
-       compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
-   compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
-    compute_xyz.at(0,2)=2;
-size_t num_elements = (size_t)sz * sz * 4;
-pixel_buffer.resize(num_elements);
-return EM_TRUE;
-}
 
 /**
  * @brief Resizes a specific input texture by recreating it and its associated resources.
@@ -1588,6 +1594,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
