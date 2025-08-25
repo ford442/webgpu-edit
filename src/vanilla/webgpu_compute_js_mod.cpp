@@ -1397,6 +1397,30 @@ function videoStart() {
   //  image called by startBtn //
   ///////////////////////////////
 
+function imageStartFetch(){
+let SiZ=window.innerHeight;
+if(running==0){
+setTimeout(function(){
+let srsiz=document.querySelector('#srsiz').innerHTML;
+let vsiz=document.querySelector('#vsiz').innerHTML;
+Module.ccall("startWebGPUi",null,["Number","Number","Number"],[768,vsiz,srsiz]);
+console.log('Starting..');
+running=1;
+},250);
+}else{
+setTimeout(function(){
+let srsiz=document.querySelector('#srsiz').innerHTML;
+let vsiz=document.querySelector('#vsiz').innerHTML;
+Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[768,vsiz,srsiz]);
+console.log('Starting..');
+},250);
+}
+Module.cnvOn();
+setInterval(function(){
+Module.cnvOn();
+},16.666);
+}
+
 function imageStart(){
 var vvi=document.querySelector('#ivi');
 let SiZ=window.innerHeight;
@@ -1905,11 +1929,9 @@ videoStart()},4200);
 }
 if(media_mode=='img'){
 scanImages();
-/*
 setTimeout(function(){
-imageStart();
+imageStartFetch();
 },3200);
-*/
 setTimeout(function(){
 loada()},4200);
 }
@@ -2017,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
