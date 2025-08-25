@@ -1403,7 +1403,7 @@ if(running==0){
 setTimeout(function(){
 let srsiz=document.querySelector('#srsiz').innerHTML;
 let vsiz=document.querySelector('#vsiz').innerHTML;
-Module.ccall("startWebGPUi",null,["Number","Number","Number"],[768,vsiz,srsiz]);
+Module.ccall("startWebGPUi",null,["Number","Number","Number"],[vsiz,vsiz,srsiz]);
 console.log('Starting..');
 running=1;
 },250);
@@ -1411,7 +1411,7 @@ running=1;
 setTimeout(function(){
 let srsiz=document.querySelector('#srsiz').innerHTML;
 let vsiz=document.querySelector('#vsiz').innerHTML;
-Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[768,vsiz,srsiz]);
+Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[vsiz,vsiz,srsiz]);
 console.log('Starting..');
 },250);
 }
@@ -2039,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
