@@ -218,6 +218,7 @@ return EM_TRUE;
 }
 
 EMSCRIPTEN_BINDINGS(my_video_module) {
+emscripten::function("ftch", &fetcher);
 emscripten::function("frmOn", &texOn);
 emscripten::function("cnvOn", &cnvOn);
 emscripten::function("getPixelBufferView", &getPixelBufferView);
@@ -1590,4 +1591,5 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
