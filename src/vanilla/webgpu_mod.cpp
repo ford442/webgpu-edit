@@ -64,7 +64,7 @@ void process_image(const char * img_data, int size) {
     unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
     if (pixels) {
        // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
-        int decoded_size = width * height * channels;
+        int decoded_size = width * height * 4;
      //   buffer_resize(height);
      //   pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
 
@@ -1591,6 +1591,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
