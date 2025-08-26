@@ -30,23 +30,23 @@ void process_image(const char * img_data, int size) {
     if (pixels) {
        // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         int decoded_size = width * height * channels;
-        buffer_resize(height);
-        pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
-        /*
+     //   buffer_resize(height);
+     //   pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+
         std::ofstream outfile("/video/frame.gl", std::ios::binary);
         if (outfile) {
             outfile.write((char*)pixels, decoded_size);
             outfile.close();
-            std::cout << "File 'decoded_image.raw' saved to the virtual filesystem." << std::endl;
-            on_b.at(5,5)=1;
+          //  std::cout << "File 'decoded_image.raw' saved to the virtual filesystem." << std::endl;
+       //     on_b.at(5,5)=1;
         } else {
             std::cerr << "Failed to open 'decoded_image.raw' for writing in the VFS." << std::endl;
         }
-        */
-        resizeInputTexture(height);
+     
+      //  resizeInputTexture(height);
         // szeV.at(7,7) = height;
         // on_b.at(4,4)=1;
-        texOn();
+    //    texOn();
         stbi_image_free(pixels);
     } else {
         std::cerr << "Failed to decode image from memory." << std::endl;
@@ -1597,6 +1597,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
