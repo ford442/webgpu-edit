@@ -1931,9 +1931,9 @@ if(media_mode=='img'){
 scanImages();
 setTimeout(function(){
 imageStartFetch();
-},2200);
+},3200);
 setTimeout(function(){
-loada()},5200);
+loada()},4200);
 }
 });
 
@@ -2039,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
