@@ -16,9 +16,9 @@ namespace fsm = boost::filesystem;
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
 EM_BOOL buffer_resize(emscripten_align1_int sz){
-       compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
-   compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
-    compute_xyz.at(0,2)=2;
+compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,2)=2;
 size_t num_elements = (size_t)sz * sz * 4;
 pixel_buffer.resize(num_elements);
 return EM_TRUE;
@@ -56,6 +56,59 @@ void resizeInputTexture(emscripten_align1_int newSize) {
     wict.at(4,4).texture = WGPU_Texture.at(0,0,3);
     WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGroupLayout.at(0,0,0), WGPU_BindGroupEntries.at(0,0,0), 10);
     emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
+}
+
+
+void process_image(const char * img_data, int size) {
+    int width, height, channels;
+    unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
+    if (pixels) {
+       // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
+        int decoded_size = width * height * channels;
+     //   buffer_resize(height);
+     //   pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+
+        std::ofstream outfile("/video/frame.gl", std::ios::binary);
+        if (outfile) {
+            outfile.write((char*)pixels, decoded_size);
+            outfile.close();
+          //  std::cout << "File 'decoded_image.raw' saved to the virtual filesystem." << std::endl;
+       //     on_b.at(5,5)=1;
+        } else {
+            std::cerr << "Failed to open 'decoded_image.raw' for writing in the VFS." << std::endl;
+        }
+     
+      //  resizeInputTexture(height);
+        // szeV.at(7,7) = height;
+        // on_b.at(4,4)=1;
+    //    texOn();
+        stbi_image_free(pixels);
+    } else {
+        std::cerr << "Failed to decode image from memory." << std::endl;
+    }
+}
+
+void downloadSucceeded(emscripten_fetch_t * fetch) {
+   // std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
+    process_image(fetch->data,fetch->numBytes);
+    emscripten_fetch_close(fetch);
+}
+
+void downloadFailed(emscripten_fetch_t * fetch) {
+   // std::cerr << "Downloading " << fetch->url << " failed! HTTP status code: " << fetch->status << std::endl;
+    emscripten_fetch_close(fetch);
+}
+
+void fetcher(const std::string & fl_nm) {
+    emscripten_fetch_attr_t attr;
+    emscripten_fetch_attr_init(&attr);
+    strcpy(attr.requestMethod, "GET");
+    attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+    attr.onsuccess = downloadSucceeded;
+    attr.onerror = downloadFailed;
+   // std::cout << "Requesting file from server..." << std::endl;
+    emscripten_fetch(&attr, fl_nm.c_str());
+    return;
 }
 
 emscripten::val getPixelBufferView() {
@@ -1537,3 +1590,4 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
