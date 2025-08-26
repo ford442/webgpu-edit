@@ -714,8 +714,8 @@ textureDescriptorIn.viewFormats=nullptr; // &textureAviewFormats[0];
 textureDescriptorInV.dimension=WGPU_TEXTURE_DIMENSION_2D;
 textureDescriptorInV.format=wtf.at(1,1);
 textureDescriptorInV.usage=WGPU_TEXTURE_USAGE_TEXTURE_BINDING|WGPU_TEXTURE_USAGE_COPY_DST;
-textureDescriptorInV.width=sze.at(3,3);
-textureDescriptorInV.height=sze.at(3,3); // default = 1;
+textureDescriptorInV.width=szeV.at(7,7);
+textureDescriptorInV.height=szeV.at(7,7); // default = 1;
 emscripten_log(EM_LOG_CONSOLE,"Input texture size: %d", szeV.at(7,7));
 textureDescriptorInV.depthOrArrayLayers=1;
 textureDescriptorInV.mipLevelCount=1;
@@ -726,8 +726,8 @@ textureDescriptorInV.viewFormats=nullptr; // &textureAviewFormats[0];
 textureDescriptorOut.dimension=WGPU_TEXTURE_DIMENSION_2D;
 textureDescriptorOut.format=wtf.at(2,2);
 textureDescriptorOut.usage=WGPU_TEXTURE_USAGE_STORAGE_BINDING|WGPU_TEXTURE_USAGE_COPY_SRC;
-textureDescriptorOut.width=sze.at(1,1);
-textureDescriptorOut.height=sze.at(1,1); // default = 1;
+textureDescriptorOut.width=sze.at(3,3);
+textureDescriptorOut.height=sze.at(3,3); // default = 1;
 textureDescriptorOut.depthOrArrayLayers=1;
 textureDescriptorOut.mipLevelCount=1;
 textureDescriptorOut.sampleCount=1;
@@ -737,8 +737,8 @@ textureDescriptorOut.viewFormats=nullptr;
 textureDescriptorOut2.dimension=WGPU_TEXTURE_DIMENSION_2D;
 textureDescriptorOut2.format=wtf.at(2,2);
 textureDescriptorOut2.usage=WGPU_TEXTURE_USAGE_TEXTURE_BINDING|WGPU_TEXTURE_USAGE_COPY_DST;
-textureDescriptorOut2.width=sze.at(1,1);
-textureDescriptorOut2.height=sze.at(1,1); // default = 1;
+textureDescriptorOut2.width=sze.at(3,3);
+textureDescriptorOut2.height=sze.at(3,3); // default = 1;
 textureDescriptorOut2.depthOrArrayLayers=1;
 textureDescriptorOut2.mipLevelCount=1;
 textureDescriptorOut2.sampleCount=1;
@@ -1597,20 +1597,3 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
