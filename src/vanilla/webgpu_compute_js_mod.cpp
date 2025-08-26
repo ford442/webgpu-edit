@@ -1829,6 +1829,9 @@ document.querySelector('#pmhig').innerHTML=parseInt(window.innerHeight,10);
 document.querySelector('#circle').height=parseInt(window.innerHeight,10);
 document.querySelector('#circle').width=parseInt(window.innerWidth,10);
 if(media_mode=='img'){
+
+Module.ftch(document.querySelector('#isrc').innerHTML);
+
 document.querySelector('#lvi').src=document.querySelector('#isrc').innerHTML;
 // document.querySelector('#ivi').height=window.innerHeight;
 // document.querySelector('#lvi').height=window.innerHeight;
@@ -1982,5 +1985,6 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
