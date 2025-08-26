@@ -141,8 +141,7 @@ static void ObtainedWebGpuDeviceStart(WGpuDevice,void *);
 // const char * rd_fl(const char *);
 EM_BOOL getCode(const char *);
 EM_BOOL texOn();
-resizeInputTexture(emscripten_align1_int);
-void fetcher(const std::string);
+void resizeInputTexture(emscripten_align1_int);
 EM_BOOL buffer_resize(emscripten_align1_int);
 void raf();
 // static void WGPU_Start();
@@ -350,6 +349,7 @@ using clk_tensor=boost::numeric::ublas::tensor<boost::chrono::high_resolution_cl
 using timespn_tensor=boost::numeric::ublas::tensor<boost::chrono::duration<boost::compute::double_,boost::chrono::seconds::period>>;
 
 EM_BOOL ms_l,clk_l;
+
 
 
 
