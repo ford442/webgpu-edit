@@ -43,8 +43,10 @@ void process_image(const char * img_data, int size) {
             std::cerr << "Failed to open 'decoded_image.raw' for writing in the VFS." << std::endl;
         }
         */
-        szeV.at(7,7) = height;
-        on_b.at(4,4)=1;
+        resizeInputTexture(height);
+        // szeV.at(7,7) = height;
+        // on_b.at(4,4)=1;
+        texOn();
         stbi_image_free(pixels);
     } else {
         std::cerr << "Failed to decode image from memory." << std::endl;
@@ -1595,6 +1597,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
