@@ -1854,7 +1854,7 @@ $ls=$ls/1000;
 var rnum=Math.floor((Math.random()*($vids[0]-5))+5);
 document.querySelector('#isrc').innerHTML=$vids[rnum];
 
-Module.ftch($vids[rnum]);
+// Module.ftch($vids[rnum]);
 
 $h=window.innerHeight;
 he=document.querySelector('#hig').innerHTML;
@@ -2039,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
