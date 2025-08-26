@@ -98,19 +98,18 @@ void resizeInputTexture(emscripten_align1_int newSize) {
         wgpu_object_destroy(WGPU_Texture.at(0,0,3));
     }
     szeV.at(7,7) = newSize; // Update the global size variable
-    // sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
-    textureDescriptorInV.width = sze.at(3,3);
-    textureDescriptorInV.height = sze.at(3,3);
+    sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
+    textureDescriptorInV.width = newSize;
+    textureDescriptorInV.height = newSize;
     WGPU_TextureDescriptor.at(0,0,3) = textureDescriptorInV; // Store it back in the global array
     textureInV = wgpu_device_create_texture(wd.at(0,0), &WGPU_TextureDescriptor.at(0,0,3));
     WGPU_Texture.at(0,0,3) = textureInV;
     INVTextureView = wgpu_texture_create_view(WGPU_Texture.at(0,0,3), &WGPU_TextureViewDescriptor.at(0,0,3));
     wtv.at(6,6) = INVTextureView;
     Compute_Bindgroup_Entries[8].resource = wtv.at(6,6); // wtv.at(6,6) is INVTextureView
-    Input_Image_TextureV.texture = WGPU_Texture.at(0,0,3);
-    wict.at(4,4)=Input_Image_TextureV;
+    wict.at(4,4).texture = WGPU_Texture.at(0,0,3);
     WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGroupLayout.at(0,0,0), WGPU_BindGroupEntries.at(0,0,0), 10);
-   // emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
+    emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
 }
 
 emscripten::val getPixelBufferView() {
@@ -1597,3 +1596,4 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
