@@ -1933,7 +1933,7 @@ setTimeout(function(){
 imageStartFetch();
 },2200);
 setTimeout(function(){
-loada()},3200);
+loada()},5200);
 }
 });
 
@@ -2039,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
