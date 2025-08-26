@@ -1673,8 +1673,9 @@ let basePath = pathName.substring(0, lastSlashIndex + 1);
 txxt=txxt.replace('https://noahcohn.com/','');
 txxt=txxt.replace('https://www.noahcohn.com/','');
 
-$vids[i]=basePath+'pics/'+txxt;
-$vids[i]='https://noahcohn.com/pics/'+txxt;
+$vids[i]='./pics/'+txxt;
+// $vids[i]=basePath+'pics/'+txxt;
+// $vids[i]='https://noahcohn.com/pics/'+txxt;
 }}
 
 function scanImages(){
@@ -1981,4 +1982,5 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
