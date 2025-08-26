@@ -1434,7 +1434,7 @@ gl3.drawImage(vvi,0,0,w$-offsetX,h$-offsetY,0,0,w$-offsetX,h$-offsetY);
 var image2=gl3.getImageData(0,0,w$-offsetX,h$-offsetY);
 var imageData=image2.data;
 var pixelData=new Float32Array(imageData);
-FS.write(fileStream,pixelData,0,pixelData.length,0);
+// FS.write(fileStream,pixelData,0,pixelData.length,0);
 Module.cnvOn();
 },16.666);
 }
@@ -1985,6 +1985,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
