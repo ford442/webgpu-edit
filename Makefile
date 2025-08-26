@@ -176,7 +176,7 @@ b3_compute_mod_test5:
 	 -mextended-const -O3 -m32 -mtune=wasm32 $(STDS) $(xGL_FLAGS) -fno-strict-aliasing \
 	 -I/content/RAMDRIVE2/b3/include/vanilla/ -I/content/RAMDRIVE2/b3/highway/ \
 	 -I/content/RAMDRIVE2/b3/boost_1_88_0/ -c $(nBOOST_FLAGS) $(SIMD_FLAGS) -sSTRICT=1
-	 em++ $(mLDFLAGS) -O3 --bind -lembind -sWASM_BIGINT=1 -sEVAL_CTORS=0 \
+	 em++ $(mLDFLAGS) -O3 --bind -lembind -sWASM_BIGINT=1 -sEVAL_CTORS=0 -sFETCH=1 -sSTB_IMAGE=1 \
 	 -ffast-math -mextended-const -mbulk-memory -sEXIT_RUNTIME=0 -fopenmp-simd \
 	 -matomics -pipe -DQUAD -DDOUBLE -fexperimental-library \
 	 -sUSE_GLFW=0 -sOFFSCREEN_FRAMEBUFFER=1 -sOFFSCREENCANVAS_SUPPORT=1 -stdlib=libc++ \
@@ -299,6 +299,7 @@ b3_compute_mod_test6:
 
 all: b3_compute_mod_test5
 	echo 'Built 1ink.us Shaders.'
+
 
 
 
