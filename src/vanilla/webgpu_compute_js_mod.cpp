@@ -1415,9 +1415,9 @@ Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[vsiz,vsiz,srsiz]
 console.log('Starting..');
 },250);
 }
-Module.cnvOn();
+Module.texOn();
 setInterval(function(){
-Module.cnvOn();
+Module.texOn();
 },16.666);
 }
 
@@ -2039,6 +2039,7 @@ Module.ftch();
 });
 
 });
+
 
 
 
