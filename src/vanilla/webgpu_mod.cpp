@@ -89,7 +89,7 @@ void process_image(const char * img_data, int size) {
 }
 
 void downloadSucceeded(emscripten_fetch_t * fetch) {
-   // std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
+    std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
     process_image(fetch->data,fetch->numBytes);
     emscripten_fetch_close(fetch);
 }
@@ -1591,5 +1591,6 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
