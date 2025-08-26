@@ -28,7 +28,7 @@ void process_image(const char * img_data, int size) {
     int width, height, channels;
     unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
     if (pixels) {
-        std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
+       // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         int decoded_size = width * height * channels;
         buffer_resize(height);
         pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
@@ -54,13 +54,13 @@ void process_image(const char * img_data, int size) {
 }
 
 void downloadSucceeded(emscripten_fetch_t * fetch) {
-    std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
+   // std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
     process_image(fetch->data,fetch->numBytes);
     emscripten_fetch_close(fetch);
 }
 
 void downloadFailed(emscripten_fetch_t * fetch) {
-    std::cerr << "Downloading " << fetch->url << " failed! HTTP status code: " << fetch->status << std::endl;
+   // std::cerr << "Downloading " << fetch->url << " failed! HTTP status code: " << fetch->status << std::endl;
     emscripten_fetch_close(fetch);
 }
 
@@ -71,7 +71,7 @@ void fetcher(const std::string & fl_nm) {
     attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
     attr.onsuccess = downloadSucceeded;
     attr.onerror = downloadFailed;
-    std::cout << "Requesting file from server..." << std::endl;
+   // std::cout << "Requesting file from server..." << std::endl;
     emscripten_fetch(&attr, fl_nm.c_str());
     return;
 }
@@ -110,7 +110,7 @@ void resizeInputTexture(emscripten_align1_int newSize) {
     Input_Image_TextureV.texture = WGPU_Texture.at(0,0,3);
     wict.at(4,4)=Input_Image_TextureV;
     WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGroupLayout.at(0,0,0), WGPU_BindGroupEntries.at(0,0,0), 10);
-    emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
+   // emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
 }
 
 emscripten::val getPixelBufferView() {
@@ -1597,6 +1597,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
