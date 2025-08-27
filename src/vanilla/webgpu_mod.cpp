@@ -16,9 +16,9 @@ namespace fsm = boost::filesystem;
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
 EM_BOOL buffer_resize(emscripten_align1_int sz){
-compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
-compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
-compute_xyz.at(0,2)=2;
+// compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
+// compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
+// compute_xyz.at(0,2)=2;
 size_t num_elements = (size_t)sz * sz * 3;
 pixel_buffer.resize(num_elements);
 return EM_TRUE;
@@ -1566,4 +1566,5 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
