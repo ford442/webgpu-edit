@@ -1779,8 +1779,11 @@ if(media_mode=='img'){
 iV.addEventListener('load',function(){
 this.width=this.naturalWidth;
 this.height=this.naturalHeight;
+setTimeout(function(){
 imageStart();
+},1000);
 });
+
 loadiV.addEventListener('load',function(){
 this.width=this.naturalWidth;
 this.height=this.naturalHeight;
@@ -1982,6 +1985,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
