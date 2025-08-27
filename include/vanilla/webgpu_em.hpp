@@ -13,7 +13,6 @@
 #include "../../include/vanilla/gl.hpp"
 #include "../../include/vanilla/boost_defs.hpp"
 #include "../../lib/lib_webgpu_cpp20.cpp"
-// #include <SDL2/SDL.h>
 #include "../../include/vanilla/egl.hpp"
 
 // #include "../../highway/hwy/foreach_target.h"
@@ -59,12 +58,12 @@ using namespace std;
 
 // #define __EMCSCRIPTEN__ 1
 
+// #include <SDL2/SDL.h>
+
 #include <cstdint>
 // #include <pthread.h>
 #include <boost/container/vector.hpp>
-
 #include <boost/array.hpp>
-
 #include <boost/integer.hpp>
 #include <boost/atomic.hpp>
 #include <boost/numeric/ublas/tensor.hpp>
@@ -72,11 +71,10 @@ using namespace std;
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/chrono.hpp>
-
-// #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
- 
-#include <boost/compute/core.hpp>   //  requires CL.h
+ #include <boost/compute/core.hpp>   //  requires CL.h
+// #include <boost/filesystem.hpp>
+#include <boost/function.hpp>
 
 #include <experimental/simd>
 
@@ -89,7 +87,6 @@ using namespace std;
 #include <limits>
 #include <numeric>
 #include <string>
-
 #include <algorithm>
 #include <stdarg.h>
 #include <stdio.h>
@@ -97,22 +94,23 @@ using namespace std;
 // #include <vector>
 #include <memory>
 #include <streambuf>
-
 #include <cassert>
 #include <random>
 #include <cfloat>
 #include <new>
-#include <emscripten.h>
+#include <iostream>
+#include <cstdlib>
+#include <functional>
 
+#include <emscripten.h>
 // #include <emscripten/threading.h>
 #include <emscripten/em_types.h>
 #include <emscripten/val.h>
-
 // #include <emscripten/wasmfs.h>
 #include <emscripten/html5.h>
 #include <emscripten/html5_webgpu.h>
-#include <iostream>
 #include "../../lib/lib_webgpu.h"
+
 /*
 #include <thrust/host_vector.h>
 #include <thrust/device_vector.h>
@@ -120,13 +118,9 @@ using namespace std;
 #include <thrust/reduce.h>
 #include <thrust/functional.h>
   */
-#include <cstdlib>
-
-#include <functional>
 
 template<class ArgumentType,class ResultType>
 
-#include <boost/function.hpp>
 
 struct unary_function{
 typedef ArgumentType argument_type;
@@ -134,15 +128,17 @@ typedef ResultType result_type;
 };
 
 inline int rNd4(int);
-// static void WGPU_Run();
-// static void ObtainedWebGpuDeviceStart(WGpuDevice,void *);
 static void ObtainedWebGpuAdapterStart(WGpuAdapter,void *);
 static void ObtainedWebGpuDeviceStart(WGpuDevice,void *);
-// const char * rd_fl(const char *);
 EM_BOOL getCode(const char *);
 void raf();
+
+// static void WGPU_Run();
+// static void ObtainedWebGpuDeviceStart(WGpuDevice,void *);
+// const char * rd_fl(const char *);
 // static void WGPU_Start();
 // int cltest();
+
 
 extern"C"{
 
@@ -157,16 +153,13 @@ void runWebGPU();
 constexpr uint32_t compute_x = 32;
 constexpr uint32_t compute_y = 8;
 constexpr uint32_t compute_z = 1;
-
-WGpuBuffer indice_Buffer;
-WGpuBuffer vertex_Buffer;
-WGpuBuffer vertex_Buffer_UV;
+EM_BOOL ms_l,clk_l;
 
 WGpuImageBitmap bmpImage;
-
 WGpuImageCopyTexture videoTextureCopy;
 WGpuImageCopyTexture MSTextureCopy;
 WGpuExternalTexture extTexture;
+
 WGpuTextureView depthTextureView;
 WGpuTextureView depthTextureView2;
 WGpuTextureView colorTextureView;
@@ -177,7 +170,7 @@ WGpuTextureView INVTextureView;
 WGpuTextureView OUTTextureView;
 WGpuTextureView OUTTexture2View;
 WGpuTextureView MSTextureView;
-  WGpuTextureView msaaTextureView;
+WGpuTextureView msaaTextureView;
 
 WGpuTexture depthTexture;
 WGpuTexture depthTexture2;
@@ -190,15 +183,25 @@ WGpuTexture textureInV;
 WGpuTexture textureOut;
 WGpuTexture textureOut2;
 WGpuTexture __128bit_Texture__;
-  WGpuTexture msaaTexture;
+WGpuTexture msaaTexture;
+WGpuTexture textureA;
 
- WGpuRenderPipelineDescriptor renderPipelineDesc;
- WGpuRenderPipelineDescriptor renderPipelineDesc2;
- WGpuShaderModule vs, fs, fs2;
-
+WGpuRenderPipelineDescriptor renderPipelineDesc;
+WGpuRenderPipelineDescriptor renderPipelineDesc2;
+WGpuShaderModule vs, fs, fs2;
 WGpuBindGroup bindgroup;
 WGpuBindGroup bindgroup_2;
 WGpuRenderBundleEncoder renderBundleEncoder;
+WGpuBindGroupLayout bindGroupLayout;
+WGpuBindGroupLayout bindGroupLayoutB;
+WGpuComputePipeline computePipeline;
+WGpuShaderModule cs;
+WGpuCommandBuffer commandBuffer;
+WGpuCommandEncoder encoder;
+WGpuComputePassEncoder computePass;
+WGpuPipelineLayout pipelineLayout;
+WGpuQuerySet querySet;
+
 WGpuBuffer uniBuffer;
 WGpuBuffer srcBuffer;
 WGpuBuffer dstBuffer;
@@ -208,6 +211,13 @@ WGpuBuffer uni_iTimeDelta_Buffer;
 WGpuBuffer uni_iResolution_Buffer;
 WGpuBuffer uni_iResolution_Buffer_2;
 WGpuBuffer uni_iFrame_Buffer;
+WGpuBuffer indice_Buffer;
+WGpuBuffer vertex_Buffer;
+WGpuBuffer vertex_Buffer_UV;
+WGpuBuffer inputBuffer;
+WGpuBuffer outputBuffer;
+WGpuBuffer mapBuffer;
+// WGpuBuffer uniBuffer;
 
 double szh,szw;
 int szhI,szwI;
@@ -216,21 +226,7 @@ float szhFv,szwFv;
 uint64_t tme;
 void * userDataA;
 void * userDataB;
-WGpuTexture textureA;
-WGpuBindGroupLayout bindGroupLayout;
-WGpuBindGroupLayout bindGroupLayoutB;
-WGpuComputePipeline computePipeline;
-WGpuBuffer inputBuffer;
-WGpuBuffer outputBuffer;
-WGpuBuffer mapBuffer;
-// WGpuBuffer uniBuffer;
-WGpuShaderModule cs;
-WGpuCommandBuffer commandBuffer;
-WGpuCommandEncoder encoder;
-WGpuComputePassEncoder computePass;
-WGpuBindGroup bindGroup;
-WGpuPipelineLayout pipelineLayout;
-WGpuQuerySet querySet;
+
 int randomNumber,entropySeed;
 int raN;
 int raND;
@@ -344,6 +340,3 @@ using wvbl_tensor=boost::numeric::ublas::tensor<WGpuVertexBufferLayout>;
 using wib_tensor=boost::numeric::ublas::tensor<WGpuImageBitmap>;
 using clk_tensor=boost::numeric::ublas::tensor<boost::chrono::high_resolution_clock::time_point>;
 using timespn_tensor=boost::numeric::ublas::tensor<boost::chrono::duration<boost::compute::double_,boost::chrono::seconds::period>>;
-
-EM_BOOL ms_l,clk_l;
-
