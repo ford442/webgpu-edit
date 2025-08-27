@@ -1799,7 +1799,7 @@ document.querySelector('#pmhig').innerHTML=parseInt(window.innerHeight,10);
 hii=window.innerHeight;
 document.querySelector('#ihid').innerHTML=hii;
 $lt=Math.round(tem.innerHTML);
-var $ldt=document.querySelector('#tim').innerHTML;
+var $ldt=document.querySelector('#tim2').innerHTML;
 $ls=$lt/1000;
 $ls=$ls*1000;
 $ls=Math.round($ls);
@@ -1982,6 +1982,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
