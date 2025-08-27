@@ -1615,10 +1615,10 @@ ZoomOut();
 return;
 }
 
-// void frmOn(){
-// texOn();
-// return;
-// }
+void frmOn(){
+texOn();
+return;
+}
 
 void frmsOff(){
 framesOff();
@@ -1652,6 +1652,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
