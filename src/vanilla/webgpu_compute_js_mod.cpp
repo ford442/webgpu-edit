@@ -1386,14 +1386,14 @@ if(running==0){
 setTimeout(function(){
 let srsiz=document.querySelector('#srsiz').innerHTML;
 let vsiz=document.querySelector('#vsiz').innerHTML;
-Module.ccall("startWebGPUi",null,["Number","Number","Number"],[vvi.height,vsiz,srsiz]);
+Module.ccall("startWebGPUi",null,["Number","Number","Number"],[vvi.width,vsiz,srsiz]);
 console.log('Starting..');
 running=1;
 },250);
 }else{
 setTimeout(function(){
 let srsiz=document.querySelector('#srsiz').innerHTML;let vsiz=document.querySelector('#vsiz').innerHTML;
-Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[vvi.height,vsiz,srsiz]);
+Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[vvi.width,vsiz,srsiz]);
 console.log('Starting..');
 },250);
 }
@@ -1844,8 +1844,8 @@ if(media_mode=='img'){
 // document.querySelector('#lvi').width=wi;
 }
 if(he>1){
-Module.resizeInputTexture(he);
-Module.sizeBuffer(he);
+// Module.resizeInputTexture(he);
+// Module.sizeBuffer(he);
 }
 document.querySelector('#di').click();
 // videoStart();
@@ -1982,5 +1982,6 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
