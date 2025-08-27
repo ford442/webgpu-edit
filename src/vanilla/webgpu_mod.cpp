@@ -29,7 +29,7 @@ if (num_elements == 0) {
 pixel_buffer.clear();
 return;
 }
-// pixel_buffer.resize(num_elements);
+pixel_buffer.resize(num_elements);
 const float scale = 1.0f / 255.0f;
 const __m128 inv_255_ps_sse = _mm_set1_ps(scale); // 128-bit scaling vector
 const uint8_t* data_ptr = data.data();
@@ -167,15 +167,15 @@ void process_image(const char * img_data, int size) {
                 }
             }
         }
-        boost::container::vector<uint8_t> u8_pixel_data(padded_pixels, padded_pixels + padded_size);
+       // boost::container::vector<uint8_t> u8_pixel_data(padded_pixels, padded_pixels + square_size);
         // 2. Ensure the destination float buffer is the correct size BEFORE the conversion.
-        pixel_buffer.resize(padded_size);
+       // pixel_buffer.resize(square_size);
         // 3. Call your SSE function to perform the fast uint8 to float conversion.
-        convert_u8_to_float_sse(u8_pixel_data, pixel_buffer);
-       // pixel_buffer.insert(pixel_buffer.end(), padded_pixels, padded_pixels + padded_size);
+       // convert_u8_to_float_sse(u8_pixel_data, pixel_buffer);
+       // pixel_buffer.insert(pixel_buffer.end(), padded_pixels, padded_pixels + square_size);
        // buffer_resize(square_size);
-        resizeInputTexture(square_size);
-     /*
+       // resizeInputTexture(square_size);
+     
         // Now you can work with the padded_pixels buffer
         std::ofstream outfile("/video/frame.gl", std::ios::binary);
         if (outfile) {
@@ -185,10 +185,12 @@ void process_image(const char * img_data, int size) {
         } else {
             std::cerr << "Failed to open '/video/frame.gl' for writing in the VFS." << std::endl;
         }
-     */
         // Clean up the memory
         delete[] padded_pixels;
         stbi_image_free(pixels);
+        
+        startWebGPUbi(sze.at(1,1),sze.at(1,1),u64_uni.at(4,4));
+        
     } else {
         std::cerr << "Failed to decode image from memory." << std::endl;
     }
@@ -1657,17 +1659,3 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
