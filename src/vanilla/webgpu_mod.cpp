@@ -139,27 +139,24 @@ void process_image(const char * img_data, int size) {
         &width,
         &height,
         &channels,
-        0
+        4
     );
     if (pixels) {
         // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         // 1. Determine the square size (the larger of the two dimensions)
         int square_size = std::max(width, height);
-        int padded_size = square_size * square_size * channels;
+        int padded_size = square_size * square_size * 4;
         // 2. Calculate offsets to center the image
         int pad_x = (square_size - width) / 2;
         int pad_y = (square_size - height) / 2;
         // 3. Create a new buffer for the padded image and initialize to black
         unsigned char* padded_pixels = new unsigned char[padded_size](); // () initializes to 0
         // 4. Copy the original pixel data to the new buffer with padding
-        for (int y = 0; y < height; ++y) {
+    for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
-                for (int c = 0; c < channels; ++c) {
-                    // Calculate index for the original pixel
-                    int original_idx = (y * width + x) * channels + c;
-                    // Calculate index for the padded buffer
-                    int padded_idx = ((y + pad_y) * square_size + (x + pad_x)) * channels + c;
-                    // Copy the pixel
+                for (int c = 0; c < 4; ++c) {
+                    int original_idx = (y * width + x) * 4 + c;
+                    int padded_idx = ((y + pad_y) * square_size + (x + pad_x)) * 4 + c;
                     if (padded_idx < padded_size) {
                         padded_pixels[padded_idx] = pixels[original_idx];
                     }
@@ -1658,5 +1655,6 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
