@@ -87,8 +87,13 @@ void process_image(const char * img_data, int size) {
                 }
             }
         }
-     
-        buffer_resize(square_size);
+        boost::container::vector<uint8_t> u8_pixel_data(padded_pixels, padded_pixels + padded_size);
+        // 2. Ensure the destination float buffer is the correct size BEFORE the conversion.
+        pixel_buffer.resize(padded_size);
+        // 3. Call your SSE function to perform the fast uint8 to float conversion.
+        convert_u8_to_float_sse(u8_pixel_data, pixel_buffer);
+       // pixel_buffer.insert(pixel_buffer.end(), padded_pixels, padded_pixels + padded_size);
+       // buffer_resize(square_size);
         resizeInputTexture(square_size);
      /*
         // Now you can work with the padded_pixels buffer
@@ -101,8 +106,6 @@ void process_image(const char * img_data, int size) {
             std::cerr << "Failed to open '/video/frame.gl' for writing in the VFS." << std::endl;
         }
      */
-        pixel_buffer.insert(pixel_buffer.end(), padded_pixels, padded_pixels + padded_size);
-
         // Clean up the memory
         delete[] padded_pixels;
         stbi_image_free(pixels);
@@ -1652,6 +1655,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
