@@ -101,7 +101,7 @@ void process_image(const char * img_data, int size) {
             std::cerr << "Failed to open '/video/frame.gl' for writing in the VFS." << std::endl;
         }
      */
-        pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+        pixel_buffer.insert(pixel_buffer.end(), padded_pixels, padded_pixels + padded_size);
 
         // Clean up the memory
         delete[] padded_pixels;
@@ -1652,6 +1652,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
