@@ -16,10 +16,10 @@ namespace fsm = boost::filesystem;
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
 EM_BOOL buffer_resize(emscripten_align1_int sz){
-// compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
-// compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
-// compute_xyz.at(0,2)=2;
-size_t num_elements = (size_t)sz * sz * 3;
+compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
+compute_xyz.at(0,2)=2;
+size_t num_elements = (size_t)sz * sz * 4;
 pixel_buffer.resize(num_elements);
 return EM_TRUE;
 }
@@ -50,13 +50,84 @@ WGPU_BindGroup.at(0,0,0) = wgpu_device_create_bind_group(wd.at(0,0), WGPU_BindGr
 emscripten_log(EM_LOG_CONSOLE, "Input texture resize complete.");
 }
 
+
+// Function to pad an image to a square
+void process_image(const char * img_data, int size) {
+    int width, height, channels;
+    unsigned char* pixels = stbi_load_from_memory(
+        reinterpret_cast<const unsigned char*>(img_data),
+        size,
+        &width,
+        &height,
+        &channels,
+        0
+    );
+
+    if (pixels) {
+        std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
+
+        // 1. Determine the square size (the larger of the two dimensions)
+        int square_size = std::max(width, height);
+        int padded_size = square_size * square_size * 4;
+
+        // 2. Calculate offsets to center the image
+        int pad_x = (square_size - width) / 2;
+        int pad_y = (square_size - height) / 2;
+
+        // 3. Create a new buffer for the padded image and initialize to black
+        unsigned char* padded_pixels = new unsigned char[padded_size](); // () initializes to 0
+
+        // 4. Copy the original pixel data to the new buffer with padding
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                for (int c = 0; c < channels; ++c) {
+                    // Calculate index for the original pixel
+                    int original_idx = (y * width + x) * channels + c;
+                    
+                    // Calculate index for the padded buffer
+                    int padded_idx = ((y + pad_y) * square_size + (x + pad_x)) * channels + c;
+                    
+                    // Copy the pixel
+                    if (padded_idx < padded_size) {
+                        padded_pixels[padded_idx] = pixels[original_idx];
+                    }
+                }
+            }
+        }
+
+     
+        buffer_resize(square_size);
+        // resizeInputTexture(square_size);
+     
+
+        // Now you can work with the padded_pixels buffer
+        std::ofstream outfile("/video/frame.gl", std::ios::binary);
+        if (outfile) {
+            outfile.write(reinterpret_cast<char*>(padded_pixels), padded_size);
+            outfile.close();
+            std::cout << "Padded image saved to /video/frame.gl. New dimensions: " << square_size << "x" << square_size << "." << std::endl;
+        } else {
+            std::cerr << "Failed to open '/video/frame.gl' for writing in the VFS." << std::endl;
+        }
+     
+        // pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+
+        // Clean up the memory
+        delete[] padded_pixels;
+        stbi_image_free(pixels);
+    } else {
+        std::cerr << "Failed to decode image from memory." << std::endl;
+    }
+}
+
+/*
 void process_image(const char * img_data, int size) {
 int width, height, channels;
 unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
 if (pixels) {
 std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
 int decoded_size = width * height * channels;
-buffer_resize(height);
+buffer_resize(width);
  // pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
 std::ofstream outfile("/video/frame.gl", std::ios::binary);
 if (outfile) {
@@ -71,6 +142,7 @@ stbi_image_free(pixels);
 std::cerr << "Failed to decode image from memory." << std::endl;
 }
 }
+*/
 
 void downloadSucceeded(emscripten_fetch_t * fetch) {
 std::cout << "Finished downloading " << fetch->numBytes << " bytes from " << fetch->url << std::endl;
@@ -266,7 +338,7 @@ if (num_elements == 0) {
 pixel_buffer.clear();
 return;
 }
-pixel_buffer.resize(num_elements);
+// pixel_buffer.resize(num_elements);
 const float scale = 1.0f / 255.0f;
 const __m128 inv_255_ps_sse = _mm_set1_ps(scale); // 128-bit scaling vector
 const uint8_t* data_ptr = data.data();
@@ -1566,5 +1638,6 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
