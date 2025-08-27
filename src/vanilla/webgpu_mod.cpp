@@ -63,7 +63,7 @@ void process_image(const char * img_data, int size) {
     int width, height, channels;
     unsigned char* pixels = stbi_load_from_memory(reinterpret_cast<const unsigned char*>(img_data), size, &width, &height, &channels, 0);
     if (pixels) {
-       // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
+        std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         int decoded_size = width * height * channels;
         buffer_resize(height);
      //   pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
@@ -467,7 +467,7 @@ for (; i < vec_size; ++i) {
 }
 const size_t bytesPerRow = szeV.at(7,7) * 4 * sizeof(emscripten_align1_float); // Should this be pixel_buffer.size() * sizeof(float) / height? Or width*4*sizeof(float)? Check calculation.
 */
-      
+printf("writing texture from frame.gl");
 wgpu_queue_write_texture(WGPU_Queue.at(0,0,0),&wict.at(4,4),pixel_buffer.data(),bytesPerRow,szeV.at(7,7),szeV.at(7,7),szeV.at(7,7),1);
 on_b.at(5,5)=0;
 }
@@ -1592,6 +1592,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
