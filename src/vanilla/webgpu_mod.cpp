@@ -62,7 +62,6 @@ void process_image(const char * img_data, int size) {
         &channels,
         0
     );
-
     if (pixels) {
         // std::cout << "Image decoded: " << width << "x" << height << " with " << channels << " channels." << std::endl;
         // 1. Determine the square size (the larger of the two dimensions)
@@ -91,7 +90,7 @@ void process_image(const char * img_data, int size) {
      
         buffer_resize(square_size);
         resizeInputTexture(square_size);
-     
+     /*
         // Now you can work with the padded_pixels buffer
         std::ofstream outfile("/video/frame.gl", std::ios::binary);
         if (outfile) {
@@ -101,8 +100,8 @@ void process_image(const char * img_data, int size) {
         } else {
             std::cerr << "Failed to open '/video/frame.gl' for writing in the VFS." << std::endl;
         }
-     
-        // pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
+     */
+        pixel_buffer.insert(pixel_buffer.end(), pixels, pixels + decoded_size);
 
         // Clean up the memory
         delete[] padded_pixels;
@@ -557,8 +556,19 @@ wtv.at(6,6)=INVTextureView;
     }
 */
 
-const size_t bytesPerRow=szeV.at(7,7)*4*sizeof(emscripten_align1_float);
-// frame_tensor.at(0,0)=data;
+// 1. Calculate the bytes for a single pixel (RGBA, float per channel)
+const size_t bytesPerPixel = 4 * sizeof(emscripten_align1_float); // 16 bytes
+
+// 2. Calculate the unpadded size of one row
+const size_t unpaddedBytesPerRow = szeV.at(7,7) * bytesPerPixel;
+
+// 3. Pad the value to be a multiple of 256
+// This is a standard alignment formula: (value + alignment - 1) & ~(alignment - 1)
+const size_t bytesPerRow = (unpaddedBytesPerRow + 255) & ~255;
+
+  //  const size_t bytesPerRow=szeV.at(7,7)*3*sizeof(emscripten_align1_float);
+    
+    // frame_tensor.at(0,0)=data;
 // fjs_data_pointer.at(0,0)=floatData.data();
 // fjsv_data_pointer.at(0,0)=&floatData; // (std::vector<float*>)
 //     frame_tensorf.at(0,0)=floatData;
@@ -1642,6 +1652,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
