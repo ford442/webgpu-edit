@@ -482,7 +482,7 @@ fram.close();
  // AVX 2
 // convert_u8_to_float_avx2(data, pixel_buffer);
 convert_u8_to_float_sse(data, pixel_buffer);
-const size_t bytesPerRow=szeV.at(7,7)*4*sizeof(emscripten_align1_float);
+const size_t bytesPerRow=szeV.at(7,7)*3*sizeof(emscripten_align1_float);
 
 /* // regular
 std::transform(data.begin(),data.end(),pixel_buffer.begin(),[](uint8_t val){return val/255.0f;});
@@ -1629,6 +1629,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
