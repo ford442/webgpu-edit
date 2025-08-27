@@ -36,7 +36,7 @@ if (WGPU_Texture.at(0,0,3)) { // WGPU_Texture.at(0,0,3) holds textureInV
 wgpu_object_destroy(WGPU_Texture.at(0,0,3));
 }
 szeV.at(7,7) = newSize; // Update the global size variable
-sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
+// sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
 textureDescriptorInV.width = newSize;
 textureDescriptorInV.height = newSize;
 WGPU_TextureDescriptor.at(0,0,3) = textureDescriptorInV; // Store it back in the global array
@@ -482,8 +482,20 @@ fram.close();
  // AVX 2
 // convert_u8_to_float_avx2(data, pixel_buffer);
 convert_u8_to_float_sse(data, pixel_buffer);
-const size_t bytesPerRow=szeV.at(7,7)*3*sizeof(emscripten_align1_float);
 
+// 1. Calculate the bytes for a single pixel (RGBA, float per channel)
+const size_t bytesPerPixel = 4 * sizeof(emscripten_align1_float); // 16 bytes
+
+// 2. Calculate the unpadded size of one row
+const size_t unpaddedBytesPerRow = szeV.at(7,7) * bytesPerPixel;
+
+// 3. Pad the value to be a multiple of 256
+// This is a standard alignment formula: (value + alignment - 1) & ~(alignment - 1)
+const size_t bytesPerRow = (unpaddedBytesPerRow + 255) & ~255;
+
+  //  const size_t bytesPerRow=szeV.at(7,7)*3*sizeof(emscripten_align1_float);
+    
+    
 /* // regular
 std::transform(data.begin(),data.end(),pixel_buffer.begin(),[](uint8_t val){return val/255.0f;});
 const size_t bytesPerRow=szeV.at(7,7)*4*sizeof(emscripten_align1_float);
@@ -1629,6 +1641,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
