@@ -19,7 +19,7 @@ EM_BOOL buffer_resize(emscripten_align1_int sz){
 compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,2)=2;
-size_t num_elements = (size_t)sz * sz * 4;
+size_t num_elements = (size_t)sz * sz * 3;
 pixel_buffer.resize(num_elements);
 return EM_TRUE;
 }
@@ -647,7 +647,6 @@ f32_uniform.at(1,1)=static_cast<emscripten_align1_float>(sze.at(1,1));
 f32_uniform.at(2,2)=static_cast<emscripten_align1_float>(sze.at(1,1));
 szef.at(0,0)=static_cast<emscripten_align1_float>(szhI);
 szef.at(1,1)=static_cast<emscripten_align1_float>(sze.at(1,1));
-
      //  mouse setup
 clk_l=true;
 mms.at(0,0)=0.5*szef.at(0,0);
@@ -656,12 +655,11 @@ mms.at(1,0)=0.5*szef.at(0,0);
 mms.at(1,1)=0.5*(mms2.at(0,1)-szef.at(0,0));
 mms.at(2,0)=szef.at(0,0)*0.5;
 mms.at(2,1)=(mms2.at(0,1)-szef.at(0,0))*0.5;
-
 emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,EM_FALSE,ms_clk);
 emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,EM_FALSE,ms_clk);
 emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,EM_FALSE,ms_mv);
 emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,EM_FALSE,ms_clk);
-
+    //
 u64_bfrSze.at(0,0)=256; // (floor((sze.at(0,0))/256)+1)*256;
 u64_bfrSze.at(1,1)=256; // (floor((sze.at(1,1))/256)+1)*256;
 originXYZ.x=0;
@@ -1568,3 +1566,4 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
