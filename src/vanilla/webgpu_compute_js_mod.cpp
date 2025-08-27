@@ -1779,6 +1779,7 @@ if(media_mode=='img'){
 iV.addEventListener('load',function(){
 this.width=this.naturalWidth;
 this.height=this.naturalHeight;
+imageStart();
 });
 loadiV.addEventListener('load',function(){
 this.width=this.naturalWidth;
@@ -1852,8 +1853,6 @@ document.querySelector('#di').click();
 // let srsiz=document.querySelector('#srsiz').innerHTML;
 // let vsiz=document.querySelector('#vsiz').innerHTML;
 // Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[document.querySelector('#ivi').height,vsiz,srsiz]);
-
-imageStart();
 
 }
 setTimeout(function(){
@@ -1983,6 +1982,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
