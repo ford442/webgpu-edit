@@ -1421,6 +1421,10 @@ powerPreference:"high-performance",
 premultipliedAlpha:false,
 preserveDrawingBuffer:false
 });
+
+let blank=new Float32Array();
+FS.writeFile('/video/frame.gl',blank);
+
 gl3.drawImage(vvi,0,0,w$-offsetX,h$-offsetY,0,0,w$-offsetX,h$-offsetY);
 var image=gl3.getImageData(0,0,w$-offsetX,h$-offsetY);
 var imageData=image.data;
@@ -1985,6 +1989,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
