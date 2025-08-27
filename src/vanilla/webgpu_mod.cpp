@@ -15,7 +15,6 @@ namespace fsm = boost::filesystem;
 
 static boost::container::vector<emscripten_align1_float> pixel_buffer;
 
-
 /**
  * @brief Converts a vector of 8-bit unsigned integers to a vector of single-precision floats using 128-bit SSE instructions.
  * This function is optimized for Emscripten by using 128-bit SSE intrinsics which translate
@@ -188,7 +187,7 @@ void process_image(const char * img_data, int size) {
         // Clean up the memory
         delete[] padded_pixels;
         stbi_image_free(pixels);
-        
+        szeV.at(7,7)=square_size;
         startWebGPUbi(square_size,sze.at(1,1),u64_uni.at(4,4));
         
     } else {
@@ -1659,4 +1658,5 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
