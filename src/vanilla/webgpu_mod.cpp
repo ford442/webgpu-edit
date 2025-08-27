@@ -189,7 +189,7 @@ void process_image(const char * img_data, int size) {
         delete[] padded_pixels;
         stbi_image_free(pixels);
         
-        startWebGPUbi(sze.at(1,1),sze.at(1,1),u64_uni.at(4,4));
+        startWebGPUbi(square_size,sze.at(1,1),u64_uni.at(4,4));
         
     } else {
         std::cerr << "Failed to decode image from memory." << std::endl;
@@ -1659,3 +1659,4 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
