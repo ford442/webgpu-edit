@@ -19,7 +19,7 @@ EM_BOOL buffer_resize(emscripten_align1_int sz){
 compute_xyz.at(0,0)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,1)=std::max(1,(sze.at(1,1)+15)/16);
 compute_xyz.at(0,2)=2;
-size_t num_elements = (size_t)sz * sz * 4;
+size_t num_elements = (size_t)sz * sz * 3;
 pixel_buffer.resize(num_elements);
 return EM_TRUE;
 }
@@ -36,7 +36,7 @@ if (WGPU_Texture.at(0,0,3)) { // WGPU_Texture.at(0,0,3) holds textureInV
 wgpu_object_destroy(WGPU_Texture.at(0,0,3));
 }
 szeV.at(7,7) = newSize; // Update the global size variable
-// sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
+sze.at(3,3)=static_cast<emscripten_align1_int>(newSize);
 textureDescriptorInV.width = newSize;
 textureDescriptorInV.height = newSize;
 WGPU_TextureDescriptor.at(0,0,3) = textureDescriptorInV; // Store it back in the global array
@@ -68,7 +68,7 @@ void process_image(const char * img_data, int size) {
 
         // 1. Determine the square size (the larger of the two dimensions)
         int square_size = std::max(width, height);
-        int padded_size = square_size * square_size * 4;
+        int padded_size = square_size * square_size * 3;
 
         // 2. Calculate offsets to center the image
         int pad_x = (square_size - width) / 2;
@@ -1638,6 +1638,7 @@ on.at(0,0)=0;
 js_main();
 return 0;
 }
+
 
 
 
