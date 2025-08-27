@@ -1853,7 +1853,8 @@ document.querySelector('#di').click();
 // let vsiz=document.querySelector('#vsiz').innerHTML;
 // Module.ccall("startWebGPUbi",null,["Number","Number","Number"],[document.querySelector('#ivi').height,vsiz,srsiz]);
 
-// imageStart();
+imageStart();
+
 }
 setTimeout(function(){
 loada();
@@ -1982,6 +1983,7 @@ setTimeout(function(){
 document.querySelector('#di').click();
 },250);
 });
+
 
 
 
