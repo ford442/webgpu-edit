@@ -7,6 +7,7 @@ boost::chrono::high_resolution_clock::time_point t1;
 boost::chrono::high_resolution_clock::time_point t2;
 boost::chrono::high_resolution_clock::time_point t3;
 };
+
 static uTime u_time;
 
 struct VertexF{
@@ -77,8 +78,6 @@ uint32_t OutputBufferBytes=64*4;
 uint32_t InputBufferBytes=64*4;
 uint64_t WGPU_InputRangeSize=OutputBufferBytes;
 const char * Entry="main_image";
-WGPU_MAP_MODE_FLAGS mode1=0x1; // READ MODE
-
 float * WGPU_Result_Array=new float[OutputBufferBytes];
 float * WGPU_Input_Array=new float[InputBufferBytes];
 const char * Fnm2=reinterpret_cast<const char *>("/video/frame.gl");
@@ -87,25 +86,19 @@ uint8_t * result2=NULL;
 float * resultf=NULL;
 uint8_t * results2=NULL;
 float * resultsf=NULL;
-
 const char * Fnm=reinterpret_cast<const char *>("/shader/shader.wgsl");
 const char * FnmF2=reinterpret_cast<const char *>("/shader/frag2.wgsl");
 const char * FnmV=reinterpret_cast<const char *>("/shader/vert.wgsl");
 static char * result=NULL;
 static char8_t * result8=NULL;
 static char * results=NULL;
+EMSCRIPTEN_RESULT retCl,retMu,retMd,retMv,retSa,retSb,retSc;
 
 uint32_t indices[35]={3,0,1,1,2,3,4,0,3,3,7,4,1,5,6,6,2,1,4,7,6,6,5,4,2,6,6,7,3,0,4,1,1,4,5};
 
-WGpuBufferDescriptor bufferDescriptor_indice={};
-WGpuVertexAttribute vertAtt={};
-WGpuVertexAttribute vertAtt2={};
-WGpuVertexBufferLayout vertBufLayouts[2];
-WGpuVertexBufferLayout vertBufLayout={};
-WGpuBufferDescriptor bufferDescriptor_vertex={};
-WGpuBufferDescriptor bufferDescriptor_vertex_UV={};
-WGpuBufferBindingLayout bufferBindingLayoutV={};
-WGpuBufferBindingLayout bufferBindingLayoutF={};
+std::random_device randomizer;
+// char * cmp_bdy=wgl_cmp_src;
+
 
 //  egl render (no texture uv)
 const char * vertexShaderEG =
@@ -177,8 +170,14 @@ const char * frag_body=
 "return textureSample(myTexture,mySampler,fragUV);"
 "}\n";
 
+WGPU_MAP_MODE_FLAGS mode1=0x1; // READ MODE
+WGpuVertexAttribute vertAtt={};
+WGpuVertexAttribute vertAtt2={};
+WGpuVertexBufferLayout vertBufLayouts[2];
+WGpuVertexBufferLayout vertBufLayout={};
+WGpuBufferBindingLayout bufferBindingLayoutV={};
+WGpuBufferBindingLayout bufferBindingLayoutF={};
 WGpuVertexAttribute atts[2];
-
 WGpuRenderPassTimestampWrites renderTimestampWrites={};
 WGPU_TEXTURE_FORMAT canvasFormat;
 WGPU_TEXTURE_FORMAT canvasViewFormat[1];
@@ -214,6 +213,12 @@ WGpuTextureViewDescriptor videoTextureViewDescriptor={};
 WGpuTextureViewDescriptor INTextureViewDescriptor={};
 WGpuTextureViewDescriptor OUTTextureViewDescriptor={};
 WGpuTextureViewDescriptor MSTextureViewDescriptor={};
+WGpuTextureViewDescriptor textureViewDescriptorBfr={};
+WGpuTextureViewDescriptor textureViewDescriptorIn={};
+WGpuTextureViewDescriptor textureViewDescriptorInV={};
+WGpuTextureViewDescriptor textureViewDescriptorOut={};
+WGpuTextureViewDescriptor textureViewDescriptorOut2={};
+WGpuTextureViewDescriptor textureViewDescriptorMSAA={};
 WGpuRenderPassColorAttachment colorAttachment={};
 WGpuRenderPassColorAttachment videoAttachment={};
 WGpuRenderPassDepthStencilAttachment depthAttachment={};
@@ -231,7 +236,12 @@ WGpuTextureDescriptor depthTextureDescriptor2={};
 WGpuTextureDescriptor colorTextureDescriptor={};
 WGpuTextureDescriptor videoTextureDescriptor={};
 WGpuTextureDescriptor MSTextureDescriptor={};
-  WGpuTextureDescriptor msaaTextureDesc={};
+WGpuTextureDescriptor msaaTextureDesc={};
+WGpuTextureDescriptor textureDescriptorIn={};
+WGpuTextureDescriptor textureDescriptorInV={};
+WGpuTextureDescriptor textureDescriptorOut={};
+WGpuTextureDescriptor textureDescriptorOut2={};
+WGpuTextureDescriptor textureDescriptorBfr={};
 WGpuRenderPassDescriptor passDesc={};
 WGpuRenderPassDescriptor passDesc2={};
 WGpuShaderModuleDescriptor shaderModuleDescV={};
@@ -249,6 +259,13 @@ WGpuBufferDescriptor bufferDescriptor_iResolution={};
 WGpuBufferDescriptor bufferDescriptor_iResolution_2={};
 WGpuBufferDescriptor bufferDescriptor_iFrame={};
 WGpuBufferDescriptor bufferDescriptor_iTimeDelta={};
+WGpuBufferDescriptor bufferDescriptorI={};
+WGpuBufferDescriptor bufferDescriptorO={};
+WGpuBufferDescriptor bufferDescriptorM={};
+WGpuBufferDescriptor bufferDescriptorC={};
+WGpuBufferDescriptor bufferDescriptor_vertex={};
+WGpuBufferDescriptor bufferDescriptor_vertex_UV={};
+WGpuBufferDescriptor bufferDescriptor_indice={};
 WGpuBindGroupLayout bindgroup_layout=0;
 WGpuBindGroupLayout bindgroup_layout_2=0;
 WGpuBindGroupLayoutEntry Render_Bindgroup_Layout_Entries[8]={};
@@ -271,12 +288,36 @@ WGpuTextureBindingLayout textureBindingLayoutDepth={};
 WGpuTextureBindingLayout textureBindingLayout1={}; // for video.cpp
 WGpuSamplerBindingLayout samplerBindingLayout={};
 WGpuImageCopyExternalImage videoFrm={};
+WGpuComputePassDescriptor computePassDescriptor={};
+WGpuCommandBufferDescriptor commandBufferDescriptor={};
+WGpuCommandEncoderDescriptor commandEncoderDescriptor={};
+WGpuDeviceDescriptor deviceDescriptor={};
+WGpuBindGroupLayoutEntry Compute_Bindgroup_Layout_Entries[18]={};
+WGpuBindGroupLayoutEntry bindgroup_layout_entries[18]={};
+WGpuShaderModuleCompilationHint shaderModuleCompilationHint={};
+WGpuBindGroupEntry Compute_Bindgroup_Entries[18]={};
+WGpuBufferBindingLayout bufferBindingLayoutIn={3};
+WGpuBufferBindingLayout bufferBindingLayoutOut={2};
+WGpuBufferBindingLayout bufferBindingLayout3={2};
+WGpuBufferBindingLayout bufferBindingLayout4={2};
+WGpuStorageTextureBindingLayout storageTextureBindingLayoutFloat={};
+WGpuStorageTextureBindingLayout storageTextureBindingLayoutFloat32={};
+WGpuRequestAdapterOptions options={};
+WGpuShaderModuleDescriptor shaderModuleDescriptor={};
+WGpuImageCopyTexture Input_Image_Texture={};
+WGpuImageCopyTexture Input_Image_TextureV={};
+WGpuImageCopyTexture Output_Image_Texture={};
+WGpuImageCopyTexture Output_Image_Texture2={};
+WGpuImageCopyTexture WGPU_Output_Image_Bfr={};
+WGpuImageCopyTextureTagged External_Image_Texture={};
+WGpuImageCopyBuffer Input_Image_Buffer={};
+WGpuImageCopyBuffer Output_Image_Buffer={};
+WGpuImageCopyBuffer Mapped_Image_Buffer={};
 
 static wdss_tensor wdss=wdss_tensor{2,2};
 static wvs_tensor wvs=wvs_tensor{2,2};
 static wps_tensor wps=wps_tensor{2,2};
 static wfs_tensor wfs=wfs_tensor{2,2};
-
 static wib_tensor wib=wib_tensor{3,3};
 static d_tensor d64_uniform=d_tensor{8,8};
 static f_tensor f32_uniform=f_tensor{8,8};
@@ -379,52 +420,6 @@ static wbms_tensor WGPU_BufferStatus=wbms_tensor{1,1,1};
 static c_tensor wgsl=c_tensor{2,2};
 static clk_tensor time_pnt=clk_tensor{4,4};
 static timespn_tensor time_spn=timespn_tensor{4,4};
-
 static mouse_tensor mms=mouse_tensor{2,2};
 static mouse_tensor mms2=mouse_tensor{2,2};
 static vec4_tensor v4f32_uniform=vec4_tensor{2,2};
-
-EMSCRIPTEN_RESULT retCl,retMu,retMd,retMv,retSa,retSb,retSc;
-
-WGpuComputePassDescriptor computePassDescriptor={};
-WGpuCommandBufferDescriptor commandBufferDescriptor={};
-WGpuCommandEncoderDescriptor commandEncoderDescriptor={};
-WGpuDeviceDescriptor deviceDescriptor={};
-WGpuBindGroupLayoutEntry Compute_Bindgroup_Layout_Entries[18]={};
-WGpuBindGroupLayoutEntry bindgroup_layout_entries[18]={};
-WGpuShaderModuleCompilationHint shaderModuleCompilationHint={};
-WGpuBindGroupEntry Compute_Bindgroup_Entries[18]={};
-WGpuBufferBindingLayout bufferBindingLayoutIn={3};
-WGpuBufferBindingLayout bufferBindingLayoutOut={2};
-WGpuBufferBindingLayout bufferBindingLayout3={2};
-WGpuBufferBindingLayout bufferBindingLayout4={2};
-WGpuStorageTextureBindingLayout storageTextureBindingLayoutFloat={};
-WGpuStorageTextureBindingLayout storageTextureBindingLayoutFloat32={};
-WGpuRequestAdapterOptions options={};
-WGpuBufferDescriptor bufferDescriptorI={};
-WGpuBufferDescriptor bufferDescriptorO={};
-WGpuBufferDescriptor bufferDescriptorM={};
-WGpuBufferDescriptor bufferDescriptorC={};
-WGpuTextureDescriptor textureDescriptorIn={};
-WGpuTextureDescriptor textureDescriptorInV={};
-WGpuTextureDescriptor textureDescriptorOut={};
-WGpuTextureDescriptor textureDescriptorOut2={};
-WGpuTextureDescriptor textureDescriptorBfr={};
-WGpuTextureViewDescriptor textureViewDescriptorBfr={};
-WGpuTextureViewDescriptor textureViewDescriptorIn={};
-WGpuTextureViewDescriptor textureViewDescriptorInV={};
-WGpuTextureViewDescriptor textureViewDescriptorOut={};
-WGpuTextureViewDescriptor textureViewDescriptorOut2={};
-  WGpuTextureViewDescriptor textureViewDescriptorMSAA={};
-// char * cmp_bdy=wgl_cmp_src;
-WGpuShaderModuleDescriptor shaderModuleDescriptor={};
-std::random_device randomizer;
-WGpuImageCopyTexture Input_Image_Texture={};
-WGpuImageCopyTexture Input_Image_TextureV={};
-WGpuImageCopyTexture Output_Image_Texture={};
-WGpuImageCopyTexture Output_Image_Texture2={};
-WGpuImageCopyTexture WGPU_Output_Image_Bfr={};
-WGpuImageCopyTextureTagged External_Image_Texture={};
-WGpuImageCopyBuffer Input_Image_Buffer={};
-WGpuImageCopyBuffer Output_Image_Buffer={};
-WGpuImageCopyBuffer Mapped_Image_Buffer={};
